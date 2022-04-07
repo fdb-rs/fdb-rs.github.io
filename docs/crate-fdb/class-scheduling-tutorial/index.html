@@ -1,0 +1,1287 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" as="font" href="https://fdb-rs.github.io/fonts/vendor/jost/jost-v4-latin-regular.woff2" type="font/woff2" crossorigin>
+  <link rel="preload" as="font" href="https://fdb-rs.github.io/fonts/vendor/jost/jost-v4-latin-700.woff2"  type="font/woff2" crossorigin>
+
+
+<link rel="stylesheet" href="https://fdb-rs.github.io/main.css">
+
+
+
+  
+  
+    
+  
+
+  
+  
+    
+    
+  
+  
+  
+    
+  
+  
+  
+  
+    
+  
+  
+  
+
+
+  <meta name="robots" content="index, follow">
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+
+
+	
+
+
+	
+
+<title>Class Scheduling Tutorial | fdb-rs</title>
+<meta name="description" content="Class Scheduling Tutorial">
+<link rel="canonical" href="https://fdb-rs.github.io/docs/crate-fdb/class-scheduling-tutorial/">
+
+
+
+
+
+
+  
+
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BreadcrumbList",
+    
+      
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          {
+            "@type": "ListItem",
+            "position":  1 ,
+            "name": "Home",
+            "item": "https://fdb-rs.github.io/"
+          },
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  2 ,
+            "name": "Docs",
+            "item": "https://fdb-rs.github.io/docs/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  3 ,
+            "name": "Crate Fdb",
+            "item": "https://fdb-rs.github.io/docs/crate-fdb/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  4 ,
+            "name": "Class Scheduling Tutorial",
+            "item": "https://fdb-rs.github.io/docs/crate-fdb/class-scheduling-tutorial/"
+          },
+        
+      
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="theme-color" content="#fff">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://fdb-rs.github.io/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://fdb-rs.github.io/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://fdb-rs.github.io/favicon-16x16.png">
+  
+    <link rel="manifest" href="https://fdb-rs.github.io/site.webmanifest" crossorigin>
+  
+
+
+  
+
+</head>
+
+  
+
+<body class="docs single">
+  
+  
+  
+  
+<div class="header-bar fixed-top"></div>
+<header class="navbar fixed-top navbar-expand-md navbar-light">
+	<div class="container">
+		<input class="menu-btn order-0" type="checkbox" id="menu-btn">
+		<label class="menu-icon d-md-none" for="menu-btn"><span class="navicon"></span></label>
+		<a class="navbar-brand order-1 order-md-0 me-auto" href="https://fdb-rs.github.io">fdb-rs</a>
+		<button id="mode" class="btn btn-link order-2 order-md-4" type="button" aria-label="Toggle mode">
+			<span class="toggle-dark"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></span>
+			<span class="toggle-light"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></span>
+		</button>
+		<ul class="navbar-nav fork-me order-3 order-md-5">
+			
+				
+					<li class="nav-item">
+						<a class="nav-link" href="https://github.com/fdb-rs"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg><span class="ms-2 visually-hidden">GitHub</span></a>
+					</li>
+				
+			
+		</ul>
+		<div class="collapse navbar-collapse order-4 order-md-1">
+			<ul class="navbar-nav main-nav me-auto order-5 order-md-2">
+				
+					
+				
+				
+				
+					
+						<li class="nav-item docs active">
+							<a class="nav-link" href="https://fdb-rs.github.io/docs/getting-started/introduction/">Docs</a>
+						</li>
+					
+						<li class="nav-item">
+							<a class="nav-link" href="https://fdb-rs.github.io/blog/">Blog</a>
+						</li>
+					
+				
+			</ul>
+			<div class="break order-6 d-md-none"></div>
+			
+				<form class="navbar-form flex-grow-1 order-7 order-md-3">
+					<input id="userinput" class="form-control is-search" type="search" placeholder="Search docs..."
+						aria-label="Search docs..." autocomplete="off">
+					<div id="suggestions" class="shadow bg-white rounded"></div>
+				</form>
+			
+		</div>
+	</div>
+</header>
+
+
+
+  
+<div class="wrap container" role="document">
+  <div class="content">
+    <div class="row flex-xl-nowrap">
+	  
+<div class="col-lg-5 col-xl-4 docs-sidebar">
+	<nav class="docs-links" aria-label="Main navigation">
+			
+			
+			
+			
+					
+					
+					
+							<h3>Getting Started</h3>
+							<ul class="list-unstyled">
+							                           
+									<li><a class="docs-link" href="https://fdb-rs.github.io/docs/getting-started/introduction/">Introduction</a></li>
+							
+					</ul>
+					
+					
+					
+					
+							<h3>fdb crate</h3>
+							<ul class="list-unstyled">
+							                           
+									<li><a class="docs-link" href="https://fdb-rs.github.io/docs/crate-fdb/prerequisites/">Prerequisites</a></li>
+							                           
+									<li><a class="docs-link" href="https://fdb-rs.github.io/docs/crate-fdb/linking/">Linking with C library</a></li>
+							                           
+									<li><a class="docs-link" href="https://fdb-rs.github.io/docs/crate-fdb/client-network-thread/">Client Network Thread</a></li>
+							                           
+									<li><a class="docs-link active" href="https://fdb-rs.github.io/docs/crate-fdb/class-scheduling-tutorial/">Class Scheduling Tutorial</a></li>
+							
+					</ul>
+					
+					
+					
+					
+							<h3>Help</h3>
+							<ul class="list-unstyled">
+							                           
+									<li><a class="docs-link" href="https://fdb-rs.github.io/docs/help/contact-us/">Contact Us</a></li>
+							                           
+									<li><a class="docs-link" href="https://fdb-rs.github.io/docs/help/code-of-conduct/">Code of Conduct</a></li>
+							
+					</ul>
+					
+					
+			
+	</nav>
+</div>
+
+	  
+  
+  <nav class="docs-toc d-none d-xl-block col-xl-3" aria-label="Secondary navigation">
+  	<div class="page-links">
+  			<h3>On this page</h3>
+  			<nav id="TableOfContents">
+  					<ul>
+  							
+  							<li><a href="https://fdb-rs.github.io/docs/crate-fdb/class-scheduling-tutorial/#first-steps">First steps</a></li>
+  							
+  							
+  							<li><a href="https://fdb-rs.github.io/docs/crate-fdb/class-scheduling-tutorial/#class-scheduling-application">Class scheduling application</a></li>
+  							
+  									<ul>
+  											
+  											<li><a href="https://fdb-rs.github.io/docs/crate-fdb/class-scheduling-tutorial/#requirements">Requirements</a></li>
+  											
+  											<li><a href="https://fdb-rs.github.io/docs/crate-fdb/class-scheduling-tutorial/#data-model">Data model</a></li>
+  											
+  											<li><a href="https://fdb-rs.github.io/docs/crate-fdb/class-scheduling-tutorial/#leverage-rust-type-system">Leverage Rust type system</a></li>
+  											
+  											<li><a href="https://fdb-rs.github.io/docs/crate-fdb/class-scheduling-tutorial/#transactions">Transactions</a></li>
+  											
+  											<li><a href="https://fdb-rs.github.io/docs/crate-fdb/class-scheduling-tutorial/#making-some-sample-classes">Making some sample classes</a></li>
+  											
+  											<li><a href="https://fdb-rs.github.io/docs/crate-fdb/class-scheduling-tutorial/#initializing-the-database">Initializing the database</a></li>
+  											
+  											<li><a href="https://fdb-rs.github.io/docs/crate-fdb/class-scheduling-tutorial/#listing-available-classes">Listing available classes</a></li>
+  											
+  											<li><a href="https://fdb-rs.github.io/docs/crate-fdb/class-scheduling-tutorial/#signing-up-for-a-class">Signing up for a class</a></li>
+  											
+  											<li><a href="https://fdb-rs.github.io/docs/crate-fdb/class-scheduling-tutorial/#dropping-a-class">Dropping a class</a></li>
+  											
+  											<li><a href="https://fdb-rs.github.io/docs/crate-fdb/class-scheduling-tutorial/#done">Done?</a></li>
+  											
+  											<li><a href="https://fdb-rs.github.io/docs/crate-fdb/class-scheduling-tutorial/#seats-are-limited">Seats are limited!</a></li>
+  											
+  											<li><a href="https://fdb-rs.github.io/docs/crate-fdb/class-scheduling-tutorial/#concurrency-and-consistency">Concurrency and consistency</a></li>
+  											
+  											<li><a href="https://fdb-rs.github.io/docs/crate-fdb/class-scheduling-tutorial/#idempotence">Idempotence</a></li>
+  											
+  											<li><a href="https://fdb-rs.github.io/docs/crate-fdb/class-scheduling-tutorial/#dropping-with-limited-seats">Dropping with limited seats</a></li>
+  											
+  											<li><a href="https://fdb-rs.github.io/docs/crate-fdb/class-scheduling-tutorial/#more-features">More features?!</a></li>
+  											
+  											<li><a href="https://fdb-rs.github.io/docs/crate-fdb/class-scheduling-tutorial/#composing-transactions">Composing transactions</a></li>
+  											
+  											<li><a href="https://fdb-rs.github.io/docs/crate-fdb/class-scheduling-tutorial/#are-we-done">Are we done?</a></li>
+  											
+  											<li><a href="https://fdb-rs.github.io/docs/crate-fdb/class-scheduling-tutorial/#deploying-and-scaling">Deploying and scaling</a></li>
+  											
+  											<li><a href="https://fdb-rs.github.io/docs/crate-fdb/class-scheduling-tutorial/#next-steps">Next steps</a></li>
+  											
+  									</ul>
+  							
+  							
+  					</ul>
+  			</nav>
+  	</div>
+  </nav>
+  
+
+      <main class="docs-content col-lg-11 col-xl-9">
+        <h1>Class Scheduling Tutorial</h1>
+        
+        <p><em>Full working code for concepts described in this section is
+<a href="https://github.com/fdb-rs/website/tree/main/code/crate-fdb/class-scheduling-tutorial">here</a></em>.</p>
+<p>This tutorial provides a walk through of designing and building a
+simple application in Tokio and Rust using FoundationDB. In this
+tutorial, we use a few simple data modeling techniques. For a more
+in-depth discussion on data modeling in FoundationDB, see <a href="https://apple.github.io/foundationdb/data-modeling.html">Data
+Modeling</a>.</p>
+<p>The concepts in this tutorial are applicable to all the
+<a href="https://apple.github.io/foundationdb/api-reference.html">languages</a>
+supported by FoundationDB. If you prefer, you can see a version of
+this tutorial in
+<a href="https://apple.github.io/foundationdb/class-scheduling-java.html">Java</a>,
+<a href="https://apple.github.io/foundationdb/class-scheduling-go.html">Go</a>,
+<a href="https://apple.github.io/foundationdb/class-scheduling.html">Python</a>
+or
+<a href="https://apple.github.io/foundationdb/class-scheduling-ruby.html">Ruby</a>.</p>
+<h2 id="first-steps">First steps</h2>
+<p>Let's begin with &quot;Hello World.&quot;</p>
+<p>If you have not yet installed FoundationDB, see <a href="https://apple.github.io/foundationdb/getting-started-mac.html">Getting Started on
+macOS</a>
+or <a href="https://apple.github.io/foundationdb/getting-started-linux.html">Getting Started on
+Linux</a>.</p>
+<p>We will start by importing the paths that we need from Rust standard
+library, FDB and Tokio crates.</p>
+<pre data-lang="rust" style="background-color:#2b303b;color:#c0c5ce;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#b48ead;">use </span><span>fdb::transaction::{ReadTransaction, Transaction};
+</span><span style="color:#b48ead;">use </span><span>fdb::tuple::Tuple;
+</span><span>
+</span><span style="color:#b48ead;">use </span><span>tokio::runtime::Runtime;
+</span><span>
+</span><span style="color:#b48ead;">use </span><span>std::env;
+</span><span style="color:#b48ead;">use </span><span>std::error::Error;
+</span></code></pre>
+<p>Before using the API, we need to specify the API version. This allows
+programs to maintain compatibility even if the API is modified in
+future versions. Next we open a FoundationDB database. The API will
+connect to the FoundationDB cluster using the cluster file specified
+by <code>FDB_CLUSTER_FILE</code>. If you specify an empty path (<code>&quot;&quot;</code>) to
+<a href="https://docs.rs/fdb/0.2.0/fdb/fn.open_database.html"><code>fdb::open_database</code></a>
+then the client will connect to the cluster as indicated by the
+<a href="https://apple.github.io/foundationdb/administration.html#default-cluster-file">default cluster
+file</a>.</p>
+<pre data-lang="rust" style="background-color:#2b303b;color:#c0c5ce;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#b48ead;">unsafe </span><span>{
+</span><span>    fdb::select_api_version(</span><span style="color:#d08770;">630</span><span>);
+</span><span>    fdb::start_network();
+</span><span>}
+</span><span>
+</span><span style="color:#b48ead;">let</span><span> fdb_cluster_file = env::var(&quot;</span><span style="color:#a3be8c;">FDB_CLUSTER_FILE</span><span>&quot;).</span><span style="color:#96b5b4;">expect</span><span>(
+</span><span>    &quot;</span><span style="color:#a3be8c;">FDB_CLUSTER_FILE not defined!</span><span>&quot;,
+</span><span>);
+</span><span>
+</span><span style="color:#b48ead;">let</span><span> fdb_database = fdb::open_database(fdb_cluster_file)?;
+</span></code></pre>
+<p>We are ready to use the database. First, let us write a key-value
+pair. We do this by executing a transaction with
+<a href="https://docs.rs/fdb/0.2.0/fdb/database/struct.FdbDatabase.html#method.run"><code>run()</code></a>
+method. We will also use methods on type
+<a href="https://docs.rs/fdb/0.2.0/fdb/tuple/struct.Tuple.html"><code>Tuple</code></a> to
+<a href="https://docs.rs/fdb/0.2.0/fdb/tuple/struct.Tuple.html#method.pack"><code>pack()</code></a>
+data for storage in the database.</p>
+<pre data-lang="rust" style="background-color:#2b303b;color:#c0c5ce;" class="language-rust "><code class="language-rust" data-lang="rust"><span>fdb_database
+</span><span>    .</span><span style="color:#96b5b4;">run</span><span>(|</span><span style="color:#bf616a;">tr</span><span>| async </span><span style="color:#b48ead;">move </span><span>{
+</span><span>        tr.</span><span style="color:#96b5b4;">set</span><span>(
+</span><span>            {
+</span><span>                </span><span style="color:#b48ead;">let</span><span> key_tup: (&amp;</span><span style="color:#b48ead;">&#39;static str</span><span>,) = (&quot;</span><span style="color:#a3be8c;">hello</span><span>&quot;,);
+</span><span>                </span><span style="color:#b48ead;">let mut</span><span> tup = Tuple::new();
+</span><span>                tup.</span><span style="color:#96b5b4;">add_string</span><span>((key_tup.</span><span style="color:#d08770;">0</span><span>).</span><span style="color:#96b5b4;">to_string</span><span>());
+</span><span>                tup
+</span><span>            }
+</span><span>            .</span><span style="color:#96b5b4;">pack</span><span>(),
+</span><span>            {
+</span><span>                </span><span style="color:#b48ead;">let</span><span> val_tup: (&amp;</span><span style="color:#b48ead;">&#39;static str</span><span>,) = (&quot;</span><span style="color:#a3be8c;">world</span><span>&quot;,);
+</span><span>                </span><span style="color:#b48ead;">let mut</span><span> tup = Tuple::new();
+</span><span>                tup.</span><span style="color:#96b5b4;">add_string</span><span>((val_tup.</span><span style="color:#d08770;">0</span><span>).</span><span style="color:#96b5b4;">to_string</span><span>());
+</span><span>                tup
+</span><span>            }
+</span><span>            .</span><span style="color:#96b5b4;">pack</span><span>(),
+</span><span>        );
+</span><span>        Ok(())
+</span><span>    })
+</span><span>    .await?;
+</span></code></pre>
+<p>When <code>run()</code> returns without an error, the modification is durably
+stored in FoundationDB! This method creates a transaction with a
+single modification. We will see later how to do multiple operations
+in a single transaction. For now let us read back the data. We will
+use <code>Tuple</code> again to unpack the <code>result</code> as a <code>String</code>.</p>
+<pre data-lang="rust" style="background-color:#2b303b;color:#c0c5ce;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#b48ead;">let</span><span> hello = fdb_database
+</span><span>    .</span><span style="color:#96b5b4;">run</span><span>(|</span><span style="color:#bf616a;">tr</span><span>| async </span><span style="color:#b48ead;">move </span><span>{
+</span><span>        </span><span style="color:#b48ead;">let</span><span> result = tr
+</span><span>            .</span><span style="color:#96b5b4;">get</span><span>(
+</span><span>                {
+</span><span>                    </span><span style="color:#b48ead;">let</span><span> key_tup: (&amp;</span><span style="color:#b48ead;">&#39;static str</span><span>,) = (&quot;</span><span style="color:#a3be8c;">hello</span><span>&quot;,);
+</span><span>                    </span><span style="color:#b48ead;">let mut</span><span> tup = Tuple::new();
+</span><span>                    tup.</span><span style="color:#96b5b4;">add_string</span><span>((key_tup.</span><span style="color:#d08770;">0</span><span>).</span><span style="color:#96b5b4;">to_string</span><span>());
+</span><span>                    tup
+</span><span>                }
+</span><span>                .</span><span style="color:#96b5b4;">pack</span><span>(),
+</span><span>            )
+</span><span>            .await?
+</span><span>            .</span><span style="color:#96b5b4;">unwrap</span><span>();
+</span><span>
+</span><span>        Ok(Tuple::from_bytes(result)?.</span><span style="color:#96b5b4;">get_string_ref</span><span>(</span><span style="color:#d08770;">0</span><span>)?.</span><span style="color:#96b5b4;">to_string</span><span>())
+</span><span>    })
+</span><span>    .await?;
+</span><span>
+</span><span>println!(&quot;</span><span style="color:#a3be8c;">Hello </span><span style="color:#d08770;">{}</span><span>&quot;, hello);
+</span></code></pre>
+<p>If this is all working, it looks like we are ready to start building
+real application. For reference, the full code for &quot;hello world&quot; is
+<a href="https://github.com/fdb-rs/website/tree/main/code/crate-fdb/class-scheduling-tutorial/hello-world">here</a>.</p>
+<h2 id="class-scheduling-application">Class scheduling application</h2>
+<p>Let us say we have been asked to build a class scheduling system for
+students and administrators. We will walk through the design and
+implementation of this application. Instead of typing everything in as
+you follow along, look at
+<a href="https://github.com/fdb-rs/website/tree/main/code/crate-fdb/class-scheduling-tutorial/class-scheduling/src/main.rs"><code>class-scheduling/src/main.rs</code></a>
+for a finished version of the program. You may want to refer to this
+code as we walk through the tutorial.</p>
+<h3 id="requirements">Requirements</h3>
+<p>We will need to let users list available classes and track which
+students have signed up for which classes. Here is a first cut of the
+functions we will need to implement.</p>
+<pre data-lang="rust" style="background-color:#2b303b;color:#c0c5ce;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#96b5b4;">available_classes</span><span>()          </span><span style="color:#65737e;">// returns a vector of classes
+</span><span style="color:#96b5b4;">signup</span><span>(student, class_name)  </span><span style="color:#65737e;">// signs up a student for a class
+</span><span style="color:#96b5b4;">dropout</span><span>(student, class_name) </span><span style="color:#65737e;">// drops a student from a class
+</span></code></pre>
+<h3 id="data-model">Data model</h3>
+<p>First, we need to design a <a href="https://apple.github.io/foundationdb/data-modeling.html">data
+model</a>. A
+data model is just a method for storing our application data using
+keys and values in FoundationDB. We seem to have two main types of
+data.</p>
+<ol>
+<li>
+<p>A list of classes (and)</p>
+</li>
+<li>
+<p>A record of which student will attend which classes</p>
+</li>
+</ol>
+<p>Let us keep attending data like this:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>// (&quot;attends&quot;, student, class_name) = &quot;&quot;
+</span></code></pre>
+<p>We will just store the key with a blank value to indicate that a
+student is signed up for a particular class. For this application, we
+are going to think about a key-value pair's key as a
+<a href="https://apple.github.io/foundationdb/data-modeling.html#data-modeling-tuples">tuple</a>. Encoding
+a tuple of data elements into a key is a very common pattern for an
+ordered key-value store.</p>
+<p>We will keep data about classes like this:</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>// (&quot;class&quot;, class_name&quot;) = seats_available
+</span></code></pre>
+<p>Similarly, each such key will represent an available class. We will
+use <code>seats_available</code> to record the number of seats available.</p>
+<h3 id="leverage-rust-type-system">Leverage Rust type system</h3>
+<p>In FoundationDB keys and values are simple byte strings. The database
+does not interpret the contents of the keys and values. The tuple
+layer provides some type safety, but that is still about
+<em>representation</em> and not about the <em>semantics</em> of data. For example in
+our data model, <code>student</code> and <code>class_name</code> are tuple layer strings,
+but semantically one refers to a student while the other refers to a
+class name.</p>
+<p>If we are not careful when writing our application, we could make the
+mistake of using <code>student</code>, when we intended to use <code>class_name</code>. As
+our data model becomes complex, it is easy to make mistakes.</p>
+<p>Luckily for us, we can leverage the Rust type system to avoid many
+such errors.</p>
+<p>By using the
+<a href="https://doc.rust-lang.org/rust-by-example/generics/new_types.html">newtype</a>
+idiom, we can get compile time guarantee that we would not be allowed
+to accidentally interchange a <code>class_name</code> value with a <code>student</code>
+value.</p>
+<pre data-lang="rust" style="background-color:#2b303b;color:#c0c5ce;" class="language-rust "><code class="language-rust" data-lang="rust"><span>#[</span><span style="color:#bf616a;">derive</span><span>(Clone, Debug, PartialEq)]
+</span><span style="color:#b48ead;">struct </span><span>Class(String);
+</span><span>
+</span><span>#[</span><span style="color:#bf616a;">derive</span><span>(Clone, Debug, PartialEq)]
+</span><span style="color:#b48ead;">struct </span><span>Student(String);
+</span></code></pre>
+<p>When constructing and deconstructing FoundationDB tuples, we could
+potentially re-order the tuples. For example instead of</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>// (&quot;attends&quot;, student, class_name) = &quot;&quot;
+</span></code></pre>
+<p>we might mistakenly construct the following FoundationDB tuple, which
+would break our data model.</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>// (student, class_name, &quot;attends&quot;) = &quot;&quot;
+</span></code></pre>
+<p>We can avoid this problems by creating custom types for keys and
+values. For an example see <code>AttendsKey</code> type in
+<a href="https://github.com/fdb-rs/website/tree/main/code/crate-fdb/class-scheduling-tutorial/class-scheduling/src/main.rs"><code>class-scheduling/src/main.rs</code></a>. Since
+Rust <a href="https://doc.rust-lang.org/std/primitive.tuple.html">tuple</a> and
+FoundationDB tuple are isomorphic, within <code>AttendsKey</code> type, we can
+first construct a Rust tuple and then convert it to a FoundationDB
+tuple.</p>
+<pre data-lang="rust" style="background-color:#2b303b;color:#c0c5ce;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#b48ead;">let</span><span> key_tup: (&amp;</span><span style="color:#b48ead;">&#39;static str</span><span>, Student, Class) = \
+</span><span>    (&quot;</span><span style="color:#a3be8c;">attends</span><span>&quot;, a.student, a.class_name);
+</span><span>
+</span><span style="color:#b48ead;">let</span><span> key_bytes = {
+</span><span>    </span><span style="color:#b48ead;">let mut</span><span> tup = Tuple::new();
+</span><span>
+</span><span>    tup.</span><span style="color:#96b5b4;">add_string</span><span>((key_tup.</span><span style="color:#d08770;">0</span><span>).</span><span style="color:#96b5b4;">to_string</span><span>());
+</span><span>
+</span><span>    </span><span style="color:#b48ead;">let</span><span> Student(student_inner) = key_tup.</span><span style="color:#d08770;">1</span><span>;
+</span><span>    tup.</span><span style="color:#96b5b4;">add_string</span><span>(student_inner);
+</span><span>
+</span><span>    </span><span style="color:#b48ead;">let</span><span> Class(class_inner) = key_tup.</span><span style="color:#d08770;">2</span><span>;
+</span><span>    tup.</span><span style="color:#96b5b4;">add_string</span><span>(class_inner);
+</span><span>
+</span><span>    tup
+</span><span>}
+</span><span>.</span><span style="color:#96b5b4;">pack</span><span>();
+</span></code></pre>
+<p>Here we are asserting the type of <code>key_tup</code> to our data model and then
+immediately creating the FoundationDB tuple in <code>key_bytes</code>. By keeping
+<code>key_tup</code> and <code>key_bytes</code> visually next to each other, the scope for
+re-ordering errors is minimized.</p>
+<p>Lastly, when we look at
+<a href="https://docs.rs/fdb/0.2.0/fdb/transaction/trait.Transaction.html"><code>Transaction</code></a>
+and
+<a href="https://docs.rs/fdb/0.2.0/fdb/transaction/trait.ReadTransaction.html"><code>ReadTransaction</code></a>
+traits, we will find that many of the methods accepts values of type
+<code>impl Into&lt;Key&gt;</code> and <code>impl Into&lt;Value&gt;</code>. We can take advantage of this
+design by implementing <code>From</code> trait on our types. Once we have the
+appropriate <code>From</code> traits implemented, these APIs will work with
+values of our type and there is no need to work with raw bytes.</p>
+<p><a href="https://github.com/fdb-rs/website/tree/main/code/crate-fdb/class-scheduling-tutorial/class-scheduling/src/main.rs"><code>class-scheduling/src/main.rs</code></a>
+has additional examples of above mentioned techniques.</p>
+<h3 id="transactions">Transactions</h3>
+<p>We are going to rely on the powerful guarantees of transactions to
+help keep of all our modifications straight, so let us look at how the
+FoundationDB Tokio API lets you write a transaction function. We use
+<code>run()</code> method to execute a code block transactionally. Let us write
+the simple <code>add_class</code> function we will use to populate the database's
+class list.</p>
+<pre data-lang="rust" style="background-color:#2b303b;color:#c0c5ce;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">add_class</span><span>(</span><span style="color:#bf616a;">tr</span><span>: &amp;FdbTransaction, </span><span style="color:#bf616a;">class_name</span><span>: Class) {
+</span><span>    </span><span style="color:#65737e;">// (&quot;class&quot;, class_name)
+</span><span>    </span><span style="color:#b48ead;">let</span><span> class_key = ClassKey::new(class_name);
+</span><span>
+</span><span>    </span><span style="color:#b48ead;">let</span><span> class_value = ClassValue::new(</span><span style="color:#d08770;">100</span><span>);
+</span><span>
+</span><span>    tr.</span><span style="color:#96b5b4;">set</span><span>(class_key, class_value);
+</span><span>}
+</span><span>
+</span><span>db.</span><span style="color:#96b5b4;">run</span><span>(|</span><span style="color:#bf616a;">tr</span><span>| async </span><span style="color:#b48ead;">move </span><span>{
+</span><span>    </span><span style="color:#65737e;">// Assuming we have initialized `class_name` with a value of type
+</span><span>    </span><span style="color:#65737e;">// `Class`
+</span><span>    </span><span style="color:#96b5b4;">add_class</span><span>(&amp;tr, class_name);
+</span><span>
+</span><span>    Ok(())
+</span><span>})
+</span><span>.await
+</span></code></pre>
+<p>The <code>run()</code> method <em>automatically creates a transaction and implements
+a retry loop</em> to ensure that the transaction eventually commits.</p>
+<p>This is equivalent to something like:</p>
+<pre data-lang="rust" style="background-color:#2b303b;color:#c0c5ce;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#b48ead;">let</span><span> t = </span><span style="color:#bf616a;">self</span><span>.</span><span style="color:#96b5b4;">create_transaction</span><span>()?;
+</span><span>
+</span><span style="color:#b48ead;">loop </span><span>{
+</span><span>    </span><span style="color:#b48ead;">let</span><span> ret_val = (async </span><span style="color:#b48ead;">move </span><span>{
+</span><mark style="background-color:#65737e30;"><span>        </span><span style="color:#65737e;">// [...]
+</span></mark><mark style="background-color:#65737e30;"><span>
+</span></mark><mark style="background-color:#65737e30;"><span>        </span><span style="color:#65737e;">// Assuming we have initialized `class_name` with a value of
+</span></mark><mark style="background-color:#65737e30;"><span>        </span><span style="color:#65737e;">// type `Class`
+</span></mark><mark style="background-color:#65737e30;"><span>        </span><span style="color:#96b5b4;">add_class</span><span>(&amp;t, class_name);
+</span></mark><mark style="background-color:#65737e30;"><span>
+</span></mark><mark style="background-color:#65737e30;"><span>        Ok(())
+</span></mark><span>    }).await;
+</span><span>
+</span><span>    </span><span style="color:#65737e;">// Received an error
+</span><span>    </span><span style="color:#b48ead;">if let </span><span>Err(e) = ret_val {
+</span><mark style="background-color:#65737e30;"><span>        </span><span style="color:#b48ead;">if </span><span>FdbError::layer_error(e.</span><span style="color:#96b5b4;">code</span><span>()) {
+</span></mark><mark style="background-color:#65737e30;"><span>            </span><span style="color:#65737e;">// Check if it is a layer error. If so, just
+</span></mark><mark style="background-color:#65737e30;"><span>            </span><span style="color:#65737e;">// return it.
+</span></mark><mark style="background-color:#65737e30;"><span>            </span><span style="color:#b48ead;">return </span><span>Err(e);
+</span></mark><mark style="background-color:#65737e30;"><span>        } </span><span style="color:#b48ead;">else if let </span><span>Err(e1) = </span><span style="color:#b48ead;">unsafe </span><span>{ t.</span><span style="color:#96b5b4;">on_error</span><span>(e) }.await {
+</span></mark><span>            </span><span style="color:#65737e;">// Check if `on_error` returned an error. This
+</span><span>            </span><span style="color:#65737e;">// means we have a non-retryable error.
+</span><span>            </span><span style="color:#b48ead;">return </span><span>Err(e1);
+</span><span>        } </span><span style="color:#b48ead;">else </span><span>{
+</span><span>            </span><span style="color:#b48ead;">continue</span><span>;
+</span><span>        }
+</span><span>    }
+</span><span>
+</span><span>    </span><span style="color:#65737e;">// No error. Attempt to commit the transaction.
+</span><span>    </span><span style="color:#b48ead;">if let </span><span>Err(e) = </span><span style="color:#b48ead;">unsafe </span><span>{ t.</span><span style="color:#96b5b4;">commit</span><span>() }.await {
+</span><span>        </span><span style="color:#65737e;">// Commit returned an error
+</span><span>        </span><span style="color:#b48ead;">if let </span><span>Err(e1) = </span><span style="color:#b48ead;">unsafe </span><span>{ t.</span><span style="color:#96b5b4;">on_error</span><span>(e) }.await {
+</span><span>            </span><span style="color:#65737e;">// Check if `on_error` returned an error. This
+</span><span>            </span><span style="color:#65737e;">// means we have a non-retryable error.
+</span><span>            </span><span style="color:#b48ead;">return </span><span>Err(e1);
+</span><span>        } </span><span style="color:#b48ead;">else </span><span>{
+</span><span>            </span><span style="color:#b48ead;">continue</span><span>;
+</span><span>        }
+</span><span>    }
+</span><span>
+</span><span>    </span><span style="color:#65737e;">// Commit successful, return `Ok(())`
+</span><span>    </span><span style="color:#b48ead;">return</span><span> ret_val;
+</span><span>}
+</span><span>
+</span></code></pre>
+<p>You can abort a transaction by creating value <code>Err(FdbError::new(err)</code>
+where <code>err</code> is in the range <code>100.=999</code>. This provides an unified
+approach to error handling in FoundationDB Tokio APIs. See
+<a href="https://docs.rs/fdb/0.2.0/fdb/error/index.html"><code>error</code></a> module and
+<a href="https://docs.rs/fdb/0.2.0/fdb/error/struct.FdbError.html"><code>FdbError</code></a>
+type documentation for details.</p>
+<p>Note that by default, the operation will be retried an infinite number
+of times and the transaction will never time out. It is therefore
+recommended that the client choose a default transaction retry limit
+or timeout value that is suitable for their application. This can be
+set either at the transaction level by passing
+<a href="https://docs.rs/fdb/0.2.0/fdb/transaction/enum.TransactionOption.html#variant.RetryLimit"><code>TransactionOption::RetryLimit</code></a>
+and
+<a href="https://docs.rs/fdb/0.2.0/fdb/transaction/enum.TransactionOption.html#variant.Timeout"><code>Transaction::Timeout</code></a>
+to
+<a href="https://docs.rs/fdb/0.2.0/fdb/transaction/trait.ReadTransaction.html#tymethod.set_option"><code>ReadTransaction::set_option</code></a>
+method or at the database level by passing
+<a href="https://docs.rs/fdb/0.2.0/fdb/database/enum.DatabaseOption.html#variant.TransactionRetryLimit"><code>DatabaseOption::TransactionRetryLimit</code></a>
+and
+<a href="https://docs.rs/fdb/0.2.0/fdb/database/enum.DatabaseOption.html#variant.TransactionRetryLimit"><code>DatabaseOption::TransactionRetryLimit</code></a>
+to
+<a href="https://docs.rs/fdb/0.2.0/fdb/database/struct.FdbDatabase.html#method.set_option"><code>FdbDatabase::set_option</code></a>
+method. For example, one can set a one minute timeout on each transaction and a default retry limit of 100 by calling:</p>
+<pre data-lang="rust" style="background-color:#2b303b;color:#c0c5ce;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#65737e;">// 60,000 ms = 1 minute
+</span><span>fdb_database.</span><span style="color:#96b5b4;">set_option</span><span>(DatabaseOption::TransactionTimeout(</span><span style="color:#d08770;">60000</span><span>))?;
+</span><span>fdb_database.</span><span style="color:#96b5b4;">set_option</span><span>(DatabaseOption::TransactionRetryLimit(</span><span style="color:#d08770;">100</span><span>))?;
+</span></code></pre>
+<h3 id="making-some-sample-classes">Making some sample classes</h3>
+<p>Let us make some sample classes and create a function
+<code>init_class_names</code> that returns a vector of classes. We will make
+individual classes from combinations of class types, levels and times:</p>
+<pre data-lang="rust" style="background-color:#2b303b;color:#c0c5ce;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#b48ead;">const </span><span style="color:#d08770;">LEVELS</span><span>: [&amp;</span><span style="color:#b48ead;">str</span><span>; </span><span style="color:#d08770;">9</span><span>] = [
+</span><span>    &quot;</span><span style="color:#a3be8c;">intro</span><span>&quot;,
+</span><span>    &quot;</span><span style="color:#a3be8c;">for dummies</span><span>&quot;,
+</span><span>    &quot;</span><span style="color:#a3be8c;">remedial</span><span>&quot;,
+</span><span>    &quot;</span><span style="color:#a3be8c;">101</span><span>&quot;,
+</span><span>    &quot;</span><span style="color:#a3be8c;">201</span><span>&quot;,
+</span><span>    &quot;</span><span style="color:#a3be8c;">301</span><span>&quot;,
+</span><span>    &quot;</span><span style="color:#a3be8c;">mastery</span><span>&quot;,
+</span><span>    &quot;</span><span style="color:#a3be8c;">lab</span><span>&quot;,
+</span><span>    &quot;</span><span style="color:#a3be8c;">seminar</span><span>&quot;,
+</span><span>];
+</span><span>
+</span><span style="color:#b48ead;">const </span><span style="color:#d08770;">TYPES</span><span>: [&amp;</span><span style="color:#b48ead;">str</span><span>; </span><span style="color:#d08770;">10</span><span>] = [
+</span><span>    &quot;</span><span style="color:#a3be8c;">chem</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">bio</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">cs</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">geometry</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">calc</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">alg</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">film</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">music</span><span>&quot;,
+</span><span>    &quot;</span><span style="color:#a3be8c;">art</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">dance</span><span>&quot;,
+</span><span>];
+</span><span>
+</span><span style="color:#b48ead;">const </span><span style="color:#d08770;">TIMES</span><span>: [&amp;</span><span style="color:#b48ead;">str</span><span>; </span><span style="color:#d08770;">18</span><span>] = [
+</span><span>    &quot;</span><span style="color:#a3be8c;">2:00</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">3:00</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">4:00</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">5:00</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">6:00</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">7:00</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">8:00</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">9:00</span><span>&quot;,
+</span><span>    &quot;</span><span style="color:#a3be8c;">10:00</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">11:00</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">12:00</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">13:00</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">14:00</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">15:00</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">16:00</span><span>&quot;,
+</span><span>    &quot;</span><span style="color:#a3be8c;">17:00</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">18:00</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">19:00</span><span>&quot;,
+</span><span>];
+</span><span>
+</span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">init_class_names</span><span>() -&gt; Vec&lt;Class&gt; {
+</span><span>    </span><span style="color:#b48ead;">let mut</span><span> class_names = Vec::new();
+</span><span>
+</span><span>    </span><span style="color:#b48ead;">for</span><span> level in </span><span style="color:#d08770;">LEVELS </span><span>{
+</span><span>        </span><span style="color:#65737e;">// we can&#39;t use type here as that is a keyword in Rust.
+</span><span>        </span><span style="color:#b48ead;">for</span><span> typ in </span><span style="color:#d08770;">TYPES </span><span>{
+</span><span>            </span><span style="color:#b48ead;">for</span><span> time in </span><span style="color:#d08770;">TIMES </span><span>{
+</span><span>                class_names.</span><span style="color:#96b5b4;">push</span><span>(
+</span><span>                    Class(
+</span><span>                        format!(&quot;</span><span style="color:#d08770;">{} {} {}</span><span>&quot;, time, typ, level).</span><span style="color:#96b5b4;">to_string</span><span>()
+</span><span>                    )
+</span><span>                );
+</span><span>            }
+</span><span>        }
+</span><span>    }
+</span><span>
+</span><span>    class_names
+</span><span>}
+</span></code></pre>
+<h3 id="initializing-the-database">Initializing the database</h3>
+<p>We initialize the database with our class list:</p>
+<pre data-lang="rust" style="background-color:#2b303b;color:#c0c5ce;" class="language-rust "><code class="language-rust" data-lang="rust"><span>async </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">init</span><span>(</span><span style="color:#bf616a;">db</span><span>: &amp;FdbDatabase) -&gt; FdbResult&lt;()&gt; {
+</span><span>    db.</span><span style="color:#96b5b4;">run</span><span>(|</span><span style="color:#bf616a;">tr</span><span>| async </span><span style="color:#b48ead;">move </span><span>{
+</span><span>        </span><span style="color:#65737e;">// (&quot;attends&quot;)
+</span><span>        </span><span style="color:#b48ead;">let</span><span> attends_prefix_range = AttendsPrefix::new().</span><span style="color:#96b5b4;">get_range</span><span>();
+</span><span>        tr.</span><span style="color:#96b5b4;">clear_range</span><span>(attends_prefix_range);
+</span><span>
+</span><span>        </span><span style="color:#65737e;">// (&quot;class&quot;)
+</span><span>        </span><span style="color:#b48ead;">let</span><span> class_prefix_range = ClassPrefix::new().</span><span style="color:#96b5b4;">get_range</span><span>();
+</span><span>        tr.</span><span style="color:#96b5b4;">clear_range</span><span>(class_prefix_range);
+</span><span>
+</span><span>        </span><span style="color:#b48ead;">for</span><span> class_name in </span><span style="color:#96b5b4;">init_class_names</span><span>() {
+</span><span>            </span><span style="color:#96b5b4;">add_class</span><span>(&amp;tr, class_name);
+</span><span>        }
+</span><span>
+</span><span>        Ok(())
+</span><span>    })
+</span><span>    .await
+</span><span>}
+</span></code></pre>
+<p>After <code>init()</code> is run, the database will contain all the sample
+classes we created above.</p>
+<h3 id="listing-available-classes">Listing available classes</h3>
+<p>Before students can do anything else, they need to be able to retrieve
+a list of available classes from the database. We do this by
+implementing <code>available_classes</code> function. Because FoundationDB sorts
+its data by key and therefore has efficient range-read capability, we
+can retrieve all of the classes in a single database call. We find
+this range of keys with
+<a href="https://docs.rs/fdb/0.2.0/fdb/transaction/trait.ReadTransaction.html#tymethod.get_range"><code>get_range()</code></a>
+method.</p>
+<pre data-lang="rust" style="background-color:#2b303b;color:#c0c5ce;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#b48ead;">const </span><span style="color:#d08770;">KEY_CONVERTION_ERROR</span><span>: </span><span style="color:#b48ead;">i32 </span><span>= </span><span style="color:#d08770;">999</span><span>;
+</span><span>
+</span><span style="color:#b48ead;">impl </span><span>TryFrom&lt;Key&gt; </span><span style="color:#b48ead;">for </span><span>ClassKey {
+</span><span>    </span><span style="color:#b48ead;">type </span><span>Error = FdbError;
+</span><span>
+</span><span>    </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">try_from</span><span>(</span><span style="color:#bf616a;">key</span><span>: Key) -&gt; FdbResult&lt;ClassKey&gt; {
+</span><span>        Tuple::from_bytes(key)
+</span><span>            .</span><span style="color:#96b5b4;">and_then</span><span>(|</span><span style="color:#bf616a;">tup</span><span>| {
+</span><span>                </span><span style="color:#65737e;">// (&quot;class&quot;, class_name)
+</span><span>                </span><span style="color:#b48ead;">if</span><span> tup.</span><span style="color:#96b5b4;">get_string_ref</span><span>(</span><span style="color:#d08770;">0</span><span>)?.</span><span style="color:#96b5b4;">as_str</span><span>() != &quot;</span><span style="color:#a3be8c;">class</span><span>&quot; {
+</span><span>                    </span><span style="color:#b48ead;">return </span><span>Err(FdbError::new(</span><span style="color:#d08770;">KEY_CONVERTION_ERROR</span><span>));
+</span><span>                }
+</span><span>
+</span><span>                </span><span style="color:#b48ead;">let</span><span> class_name = Class(tup.</span><span style="color:#96b5b4;">get_string_ref</span><span>(</span><span style="color:#d08770;">1</span><span>)?.</span><span style="color:#96b5b4;">to_string</span><span>());
+</span><span>
+</span><span>                Ok(ClassKey::new(class_name))
+</span><span>            })
+</span><span>            .</span><span style="color:#96b5b4;">map_err</span><span>(|_| FdbError::new(</span><span style="color:#d08770;">KEY_CONVERTION_ERROR</span><span>))
+</span><span>    }
+</span><span>}
+</span><span>
+</span><span style="color:#b48ead;">impl </span><span>ClassPrefix {
+</span><span>    </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">get_range</span><span>(&amp;</span><span style="color:#bf616a;">self</span><span>) -&gt; Range {
+</span><span>        </span><span style="color:#65737e;">// (&quot;class&quot;)
+</span><span>        </span><span style="color:#b48ead;">let</span><span> class_tup: (&amp;</span><span style="color:#b48ead;">&#39;static str</span><span>,) = (&quot;</span><span style="color:#a3be8c;">class</span><span>&quot;,);
+</span><span>
+</span><span>        </span><span style="color:#b48ead;">let</span><span> class_range = {
+</span><span>            </span><span style="color:#b48ead;">let mut</span><span> tup = Tuple::new();
+</span><span>            tup.</span><span style="color:#96b5b4;">add_string</span><span>((class_tup.</span><span style="color:#d08770;">0</span><span>).</span><span style="color:#96b5b4;">to_string</span><span>());
+</span><span>            tup
+</span><span>        }
+</span><span>        .</span><span style="color:#96b5b4;">range</span><span>(Bytes::new());
+</span><span>
+</span><span>        class_range
+</span><span>    }
+</span><span>
+</span><span>    </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">get_range_selector</span><span>(&amp;</span><span style="color:#bf616a;">self</span><span>) -&gt; (KeySelector, KeySelector) {
+</span><span>        </span><span style="color:#b48ead;">let</span><span> key_range = </span><span style="color:#bf616a;">self</span><span>.</span><span style="color:#96b5b4;">get_range</span><span>();
+</span><span>
+</span><span>        </span><span style="color:#b48ead;">let</span><span> begin_key_selector = KeySelector::first_greater_or_equal(
+</span><span>            key_range.</span><span style="color:#96b5b4;">begin</span><span>().</span><span style="color:#96b5b4;">clone</span><span>()
+</span><span>        );
+</span><span>        </span><span style="color:#b48ead;">let</span><span> end_key_selector = KeySelector::first_greater_or_equal(
+</span><span>            key_range.</span><span style="color:#96b5b4;">end</span><span>().</span><span style="color:#96b5b4;">clone</span><span>()
+</span><span>        );
+</span><span>
+</span><span>        (begin_key_selector, end_key_selector)
+</span><span>    }
+</span><span>}
+</span><span>
+</span><span>async </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">available_classes</span><span>(</span><span style="color:#bf616a;">tr</span><span>: &amp;FdbTransaction) -&gt; FdbResult&lt;Vec&lt;Class&gt;&gt; {
+</span><span>    </span><span style="color:#65737e;">// (&quot;class&quot;, ...)
+</span><span>    </span><span style="color:#b48ead;">let </span><span>(begin_key_selector, end_key_selector) =
+</span><span>        ClassPrefix::new().</span><span style="color:#96b5b4;">get_range_selector</span><span>();
+</span><span>
+</span><span>    </span><span style="color:#b48ead;">let mut</span><span> range_stream = tr.</span><span style="color:#96b5b4;">get_range</span><span>(
+</span><span>        begin_key_selector,
+</span><span>        end_key_selector,
+</span><span>        RangeOptions::default(),
+</span><span>    );
+</span><span>
+</span><span>    </span><span style="color:#b48ead;">let mut</span><span> class_names = Vec::new();
+</span><span>
+</span><span>    </span><span style="color:#b48ead;">while let </span><span>Some(x) = range_stream.</span><span style="color:#96b5b4;">next</span><span>().await {
+</span><span>        </span><span style="color:#b48ead;">let</span><span> kv = x?;
+</span><span>        </span><span style="color:#b48ead;">let</span><span> class_key = TryInto::&lt;ClassKey&gt;::try_into(
+</span><span>            kv.</span><span style="color:#96b5b4;">get_key</span><span>().</span><span style="color:#96b5b4;">clone</span><span>()
+</span><span>        )?;
+</span><span>        class_names.</span><span style="color:#96b5b4;">push</span><span>(class_key.</span><span style="color:#96b5b4;">into</span><span>());
+</span><span>    }
+</span><span>
+</span><span>    Ok(class_names)
+</span><span>}
+</span></code></pre>
+<p>In general, the
+<a href="https://docs.rs/fdb/0.2.0/fdb/tuple/struct.Tuple.html#method.range"><code>Tuple::range()</code></a>
+method returns a
+<a href="https://docs.rs/fdb/0.2.0/fdb/range/struct.Range.html"><code>Range</code></a>
+representing all the key-value pairs starting with the specified
+tuple. In this case we want all classes, so we call <code>Tuple::range()</code>
+with <code>(&quot;class&quot;,)</code>. Once we have the value of <code>Range</code> type, we get the
+<a href="https://docs.rs/fdb/0.2.0/fdb/struct.KeySelector.html"><code>KeySelector</code></a>
+associated with the <code>Range</code>. The <code>KeySelector</code> can then be used to
+call <code>get_range</code> method which returns a Tokio
+<a href="https://docs.rs/tokio-stream/0.1.8/tokio_stream/trait.StreamExt.html">Stream</a>
+of the key-values specified by <code>KeySelector</code>. To extract the class
+name, we unpack the key using
+<a href="https://docs.rs/fdb/0.2.0/fdb/tuple/struct.Tuple.html#method.from_bytes"><code>Tuple::fromBytes()</code></a>
+and take its second part. (The first part is the prefix <code>&quot;class&quot;</code>).</p>
+<h3 id="signing-up-for-a-class">Signing up for a class</h3>
+<p>We finally get to the crucial function. A student has decided on a
+class (by name) and wants to sign up. The <code>signup</code> function will take
+a <code>student</code> and a <code>class_name</code>.</p>
+<pre data-lang="rust" style="background-color:#2b303b;color:#c0c5ce;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">signup</span><span>(</span><span style="color:#bf616a;">tr</span><span>: &amp;FdbTransaction, </span><span style="color:#bf616a;">student</span><span>: Student, </span><span style="color:#bf616a;">class_name</span><span>: Class) {
+</span><span>    </span><span style="color:#65737e;">// (&quot;attends&quot;, student, class_name)
+</span><span>    </span><span style="color:#b48ead;">let</span><span> attends_key = AttendsKey::new(student, class_name);
+</span><span>
+</span><span>    </span><span style="color:#65737e;">// &quot;&quot;
+</span><span>    </span><span style="color:#b48ead;">let</span><span> attends_value = AttendsValue::new();
+</span><span>
+</span><span>    tr.</span><span style="color:#96b5b4;">set</span><span>(attends_key, attends_value);
+</span><span>}
+</span></code></pre>
+<p>We simply insert the appropriate tuple key (with a blank value).</p>
+<h3 id="dropping-a-class">Dropping a class</h3>
+<p>Dropping a class is similar to signing up:</p>
+<pre data-lang="rust" style="background-color:#2b303b;color:#c0c5ce;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#65737e;">// Unlike other bindings, we cannot name this function as `drop`,
+</span><span style="color:#65737e;">// because `drop` is already used in Rust.
+</span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">dropout</span><span>(</span><span style="color:#bf616a;">tr</span><span>: &amp;FdbTransaction, </span><span style="color:#bf616a;">student</span><span>: Student, </span><span style="color:#bf616a;">class_name</span><span>: Class) {
+</span><span>    </span><span style="color:#65737e;">// (&quot;attends&quot;, student, class_name)
+</span><span>    </span><span style="color:#b48ead;">let</span><span> attends_key = AttendsKey::new(student, class_name);
+</span><span>
+</span><span>    tr.</span><span style="color:#96b5b4;">clear</span><span>(attends_key);
+</span><span>}
+</span></code></pre>
+<p>Of course, to actually drop the student from the class, we need to be
+able to delete a record from the database. We do this with the
+<a href="https://docs.rs/fdb/0.2.0/fdb/transaction/trait.Transaction.html#tymethod.clear"><code>clear()</code></a>
+method.</p>
+<h3 id="done">Done?</h3>
+<p>We report back to the project leader that our application is done ---
+students can sign up for, drop, and list classes. Unfortunately, we
+learn that a new problem has been discovered: popular classes are
+being over-subscribed. Our application now needs to enforce the class
+size constraint as students add and drop classes.</p>
+<h3 id="seats-are-limited">Seats are limited!</h3>
+<p>Let us go back to the data model. Remember that we stored the number
+of seats in the class in the value of the key value entry in the class
+list.</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>// (&quot;class&quot;, class_name&quot;) = seats_available
+</span></code></pre>
+<p>Let us refine that a bit to track the <em>remaining</em> number of seats in
+the class. The initialization can work the same way (in our example,
+all classes initially have 100 seats), but the <code>available_classes</code>,
+<code>signup</code>, and <code>dropout</code> functions are going to have to change. Let us
+start with <code>available_casses</code>.</p>
+<pre data-lang="rust" style="background-color:#2b303b;color:#c0c5ce;" class="language-rust "><code class="language-rust" data-lang="rust"><span>async </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">available_classes</span><span>(</span><span style="color:#bf616a;">tr</span><span>: &amp;FdbTransaction) -&gt; FdbResult&lt;Vec&lt;Class&gt;&gt; {
+</span><span>    </span><span style="color:#65737e;">// (&quot;class&quot;, ...)
+</span><span>    </span><span style="color:#b48ead;">let </span><span>(begin_key_selector, end_key_selector) =
+</span><span>        ClassPrefix::new().</span><span style="color:#96b5b4;">get_range_selector</span><span>();
+</span><span>
+</span><span>    </span><span style="color:#b48ead;">let mut</span><span> range_stream = tr.</span><span style="color:#96b5b4;">get_range</span><span>(
+</span><span>        begin_key_selector,
+</span><span>        end_key_selector,
+</span><span>        RangeOptions::default(),
+</span><span>    );
+</span><span>
+</span><span>    </span><span style="color:#b48ead;">let mut</span><span> class_names = Vec::new();
+</span><span>
+</span><span>    </span><span style="color:#b48ead;">while let </span><span>Some(x) = range_stream.</span><span style="color:#96b5b4;">next</span><span>().await {
+</span><span>        </span><span style="color:#b48ead;">let</span><span> kv = x?;
+</span><span>
+</span><span>        </span><span style="color:#b48ead;">let</span><span> class_key = TryInto::&lt;ClassKey&gt;::try_into(
+</span><span>            kv.</span><span style="color:#96b5b4;">get_key</span><span>().</span><span style="color:#96b5b4;">clone</span><span>()
+</span><span>        )?;
+</span><span>
+</span><mark style="background-color:#65737e30;"><span>        </span><span style="color:#b48ead;">let</span><span> seats_available = ClassValue::from(
+</span></mark><mark style="background-color:#65737e30;"><span>            kv.</span><span style="color:#96b5b4;">get_value</span><span>().</span><span style="color:#96b5b4;">clone</span><span>()
+</span></mark><mark style="background-color:#65737e30;"><span>        ).</span><span style="color:#96b5b4;">get_val</span><span>();
+</span></mark><span>
+</span><mark style="background-color:#65737e30;"><span>        </span><span style="color:#b48ead;">if</span><span> seats_available &gt; </span><span style="color:#d08770;">0 </span><span>{
+</span></mark><span>            class_names.</span><span style="color:#96b5b4;">push</span><span>(class_key.</span><span style="color:#96b5b4;">into</span><span>());
+</span><span>        }
+</span><span>    }
+</span><span>
+</span><span>    Ok(class_names)
+</span><span>}
+</span></code></pre>
+<p>This is easy --- we simply add a condition to check that the value is
+non-zero. Let us check out <code>signup</code> next.</p>
+<pre data-lang="rust" style="background-color:#2b303b;color:#c0c5ce;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#b48ead;">const </span><span style="color:#d08770;">NO_REMAINING_SEATS</span><span>: </span><span style="color:#b48ead;">i32 </span><span>= </span><span style="color:#d08770;">996</span><span>;
+</span><span style="color:#b48ead;">const </span><span style="color:#d08770;">ALREADY_SIGNED_UP</span><span>: </span><span style="color:#b48ead;">i32 </span><span>= </span><span style="color:#d08770;">997</span><span>;
+</span><span>
+</span><span>async </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">signup</span><span>(
+</span><span>    </span><span style="color:#bf616a;">tr</span><span>: &amp;FdbTransaction,
+</span><span>    </span><span style="color:#bf616a;">student</span><span>: Student,
+</span><span>    </span><span style="color:#bf616a;">class_name</span><span>: Class
+</span><span>) -&gt; FdbResult&lt;()&gt; {
+</span><span>    </span><span style="color:#65737e;">// (&quot;attends&quot;, student, class_name)
+</span><span>    </span><span style="color:#b48ead;">let</span><span> attends_key = AttendsKey::new(student, class_name.</span><span style="color:#96b5b4;">clone</span><span>());
+</span><span>
+</span><span>    </span><span style="color:#65737e;">// &quot;&quot;
+</span><span>    </span><span style="color:#b48ead;">let</span><span> attends_value = AttendsValue::new();
+</span><span>
+</span><mark style="background-color:#65737e30;"><span>    </span><span style="color:#b48ead;">if</span><span> tr.</span><span style="color:#96b5b4;">get</span><span>(attends_key.</span><span style="color:#96b5b4;">clone</span><span>()).await?.</span><span style="color:#96b5b4;">is_some</span><span>() {
+</span></mark><mark style="background-color:#65737e30;"><span>        Err(FdbError::new(</span><span style="color:#d08770;">ALREADY_SIGNED_UP</span><span>))
+</span></mark><mark style="background-color:#65737e30;"><span>    } </span><span style="color:#b48ead;">else </span><span>{
+</span></mark><mark style="background-color:#65737e30;"><span>        </span><span style="color:#65737e;">// (&quot;class&quot;, class_name)
+</span></mark><mark style="background-color:#65737e30;"><span>        </span><span style="color:#b48ead;">let</span><span> class_key = ClassKey::new(class_name);
+</span></mark><mark style="background-color:#65737e30;"><span>
+</span></mark><mark style="background-color:#65737e30;"><span>        </span><span style="color:#65737e;">// Safety: It is safe to `unwrap()` here because in our data
+</span></mark><mark style="background-color:#65737e30;"><span>        </span><span style="color:#65737e;">// model assume that key `(&quot;class&quot;, class_name)` will *always*
+</span></mark><mark style="background-color:#65737e30;"><span>        </span><span style="color:#65737e;">// have seats left value.
+</span></mark><mark style="background-color:#65737e30;"><span>        </span><span style="color:#b48ead;">let</span><span> class_value = ClassValue::from(
+</span></mark><mark style="background-color:#65737e30;"><span>            tr.</span><span style="color:#96b5b4;">get</span><span>(class_key.</span><span style="color:#96b5b4;">clone</span><span>()).await?.</span><span style="color:#96b5b4;">unwrap</span><span>()
+</span></mark><mark style="background-color:#65737e30;"><span>        );
+</span></mark><mark style="background-color:#65737e30;"><span>
+</span></mark><mark style="background-color:#65737e30;"><span>        </span><span style="color:#b48ead;">let</span><span> seats_left = class_value.</span><span style="color:#96b5b4;">get_val</span><span>();
+</span></mark><mark style="background-color:#65737e30;"><span>
+</span></mark><mark style="background-color:#65737e30;"><span>        </span><span style="color:#b48ead;">if</span><span> seats_left == </span><span style="color:#d08770;">0 </span><span>{
+</span></mark><mark style="background-color:#65737e30;"><span>            Err(FdbError::new(</span><span style="color:#d08770;">NO_REMAINING_SEATS</span><span>))
+</span></mark><mark style="background-color:#65737e30;"><span>        } </span><span style="color:#b48ead;">else </span><span>{
+</span></mark><mark style="background-color:#65737e30;"><span>            </span><span style="color:#b48ead;">let</span><span> updated_class_value = ClassValue::new(seats_left - </span><span style="color:#d08770;">1</span><span>);
+</span></mark><mark style="background-color:#65737e30;"><span>            tr.</span><span style="color:#96b5b4;">set</span><span>(class_key, updated_class_value);
+</span></mark><mark style="background-color:#65737e30;"><span>            tr.</span><span style="color:#96b5b4;">set</span><span>(attends_key, attends_value);
+</span></mark><mark style="background-color:#65737e30;"><span>            Ok(())
+</span></mark><mark style="background-color:#65737e30;"><span>        }
+</span></mark><mark style="background-color:#65737e30;"><span>    }
+</span></mark><span>}
+</span></code></pre>
+<p>We now have to check that we are not already signed up, since we do
+not want to double sign up to decrease the number of seats twice. Then
+we look up how many seats are left to make sure there is a seat
+remaining so we do not push the counter into the negative. If there
+is a seat remaining, we decrement the counter.</p>
+<h3 id="concurrency-and-consistency">Concurrency and consistency</h3>
+<p>The <code>signup</code> function is starting to get a bit complex; it now reads
+and writes a few different key-value pairs in the database. One of the
+tricky issues in this situation is what happens as multiple
+clients/students read and modify the database at the same time. Could
+two students see one remaining seat and sign up at the same time?</p>
+<p>These are tricky issues without simple answers --- unless you have
+transactions! Because these functions are defined using FoundationDB
+transactions, we can have a simple answer. Each transaction behaves as
+if it is the only one modifying the database. There is no way for a
+transaction to &quot;see&quot; another transaction change the database, and each
+transaction ensures that either all of its modifications occur or none
+of them do.</p>
+<p>Looking deeper, it is, of course, possible for two transactions to
+conflict. For example, if two people both see a class with one seat
+and sign up at the same time, FoundationDB must allow only one to
+succeed. This causes one of the transactions to fail to commit (which
+can also be caused by network outages, crashes, etc.). To ensure
+correct operation, applications need to handle this situation, usually
+via retrying the transaction. In this case, the conflicting
+transaction will be retried automatically by the <code>run()</code> method and
+will eventually lead to the correct result, a <code>NO_REMAINING_SEATS</code>
+error.</p>
+<h3 id="idempotence">Idempotence</h3>
+<p>Occasionally, a transaction might be retried even after it succeeds
+(for example, if the client loses contact with the cluster at just the
+wrong moment). This can cause problems if transactions are not written
+to be idempotent, i.e. to have the same effect if committed twice as if
+committed once. There are generic design patterns for <a href="https://apple.github.io/foundationdb/developer-guide.html#developer-guide-unknown-results">making any
+transaction
+idempotent</a>,
+but many transactions are naturally idempotent. For example, all of the
+transactions in this tutorial are idempotent.</p>
+<h3 id="dropping-with-limited-seats">Dropping with limited seats</h3>
+<p>Let us finish up the limited seats feature by modifying the <code>dropout</code>
+function.</p>
+<pre data-lang="rust" style="background-color:#2b303b;color:#c0c5ce;" class="language-rust "><code class="language-rust" data-lang="rust"><span>async </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">dropout</span><span>(
+</span><span>    </span><span style="color:#bf616a;">tr</span><span>: &amp;FdbTransaction,
+</span><span>    </span><span style="color:#bf616a;">student</span><span>: Student,
+</span><span>    </span><span style="color:#bf616a;">class_name</span><span>: Class
+</span><span>) -&gt; FdbResult&lt;()&gt; {
+</span><span>    </span><span style="color:#65737e;">// (&quot;attends&quot;, student, class_name)
+</span><span>    </span><span style="color:#b48ead;">let</span><span> attends_key = AttendsKey::new(student, class_name.</span><span style="color:#96b5b4;">clone</span><span>());
+</span><span>
+</span><mark style="background-color:#65737e30;"><span>    </span><span style="color:#b48ead;">if</span><span> tr.</span><span style="color:#96b5b4;">get</span><span>(attends_key.</span><span style="color:#96b5b4;">clone</span><span>()).await?.</span><span style="color:#96b5b4;">is_none</span><span>() {
+</span></mark><mark style="background-color:#65737e30;"><span>        </span><span style="color:#65737e;">// not taking class
+</span></mark><mark style="background-color:#65737e30;"><span>        Ok(())
+</span></mark><mark style="background-color:#65737e30;"><span>    } </span><span style="color:#b48ead;">else </span><span>{
+</span></mark><mark style="background-color:#65737e30;"><span>        </span><span style="color:#65737e;">// (&quot;class&quot;, class_name)
+</span></mark><mark style="background-color:#65737e30;"><span>        </span><span style="color:#b48ead;">let</span><span> class_key = ClassKey::new(class_name);
+</span></mark><mark style="background-color:#65737e30;"><span>
+</span></mark><mark style="background-color:#65737e30;"><span>        </span><span style="color:#65737e;">// Safety: It is safe to `unwrap()` here because in our data
+</span></mark><mark style="background-color:#65737e30;"><span>        </span><span style="color:#65737e;">// model assume that key `(&quot;class&quot;, class_name)` will *always*
+</span></mark><mark style="background-color:#65737e30;"><span>        </span><span style="color:#65737e;">// have seats left value.
+</span></mark><mark style="background-color:#65737e30;"><span>        </span><span style="color:#b48ead;">let</span><span> class_value = ClassValue::from(
+</span></mark><mark style="background-color:#65737e30;"><span>            tr.</span><span style="color:#96b5b4;">get</span><span>(class_key.</span><span style="color:#96b5b4;">clone</span><span>()).await?.</span><span style="color:#96b5b4;">unwrap</span><span>()
+</span></mark><mark style="background-color:#65737e30;"><span>        );
+</span></mark><mark style="background-color:#65737e30;"><span>        </span><span style="color:#b48ead;">let</span><span> seats_left = class_value.</span><span style="color:#96b5b4;">get_val</span><span>();
+</span></mark><mark style="background-color:#65737e30;"><span>        </span><span style="color:#b48ead;">let</span><span> updated_class_value = ClassValue::new(seats_left + </span><span style="color:#d08770;">1</span><span>);
+</span></mark><mark style="background-color:#65737e30;"><span>        tr.</span><span style="color:#96b5b4;">set</span><span>(class_key, updated_class_value);
+</span></mark><span>        tr.</span><span style="color:#96b5b4;">clear</span><span>(attends_key);
+</span><span>	
+</span><mark style="background-color:#65737e30;"><span>        Ok(())
+</span></mark><span>    }
+</span><span>}
+</span></code></pre>
+<p>This case is easier than signup because there are no constraints we
+can hit. We just need to make sure the student is in the class and to
+&quot;give back&quot; one seat when the student drops.</p>
+<h3 id="more-features">More features?!</h3>
+<p>Of course, as soon as our new version of the system goes live, we hear
+of a trick that certain students are using. They are signing up for
+all classes immediately, and only later dropping those that they do
+not want to take. This as lead to an unusable system, and we have been
+asked to fix it. We decide to limit students to five classes:</p>
+<pre data-lang="rust" style="background-color:#2b303b;color:#c0c5ce;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#b48ead;">const </span><span style="color:#d08770;">TOO_MANY_CLASSES</span><span>: </span><span style="color:#b48ead;">i32 </span><span>= </span><span style="color:#d08770;">995</span><span>;
+</span><span>
+</span><span>async </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">signup</span><span>(
+</span><span>    </span><span style="color:#bf616a;">tr</span><span>: &amp;FdbTransaction,
+</span><span>    </span><span style="color:#bf616a;">student</span><span>: Student,
+</span><span>    </span><span style="color:#bf616a;">class_name</span><span>: Class
+</span><span>) -&gt; FdbResult&lt;()&gt; {
+</span><span>    </span><span style="color:#65737e;">// (&quot;attends&quot;, student, class_name)
+</span><span>    </span><span style="color:#b48ead;">let</span><span> attends_key = AttendsKey::new(student.</span><span style="color:#96b5b4;">clone</span><span>(), class_name.</span><span style="color:#96b5b4;">clone</span><span>());
+</span><span>
+</span><span>    </span><span style="color:#65737e;">// &quot;&quot;
+</span><span>    </span><span style="color:#b48ead;">let</span><span> attends_value = AttendsValue::new();
+</span><span>
+</span><span>    </span><span style="color:#b48ead;">if</span><span> tr.</span><span style="color:#96b5b4;">get</span><span>(attends_key.</span><span style="color:#96b5b4;">clone</span><span>()).await?.</span><span style="color:#96b5b4;">is_some</span><span>() {
+</span><span>        Err(FdbError::new(</span><span style="color:#d08770;">ALREADY_SIGNED_UP</span><span>))
+</span><span>    } </span><span style="color:#b48ead;">else </span><span>{
+</span><span>        </span><span style="color:#65737e;">// (&quot;class&quot;, class_name)
+</span><span>        </span><span style="color:#b48ead;">let</span><span> class_key = ClassKey::new(class_name);
+</span><span>
+</span><span>        </span><span style="color:#65737e;">// Safety: It is safe to `unwrap()` here because in our data
+</span><span>        </span><span style="color:#65737e;">// model assume that key `(&quot;class&quot;, class_name)` will *always*
+</span><span>        </span><span style="color:#65737e;">// have seats left value.
+</span><span>        </span><span style="color:#b48ead;">let</span><span> class_value = ClassValue::from(
+</span><span>            tr.</span><span style="color:#96b5b4;">get</span><span>(class_key.</span><span style="color:#96b5b4;">clone</span><span>()).await?.</span><span style="color:#96b5b4;">unwrap</span><span>()
+</span><span>        );
+</span><span>
+</span><span>        </span><span style="color:#b48ead;">let</span><span> seats_left = class_value.</span><span style="color:#96b5b4;">get_val</span><span>();
+</span><span>
+</span><span>        </span><span style="color:#b48ead;">if</span><span> seats_left == </span><span style="color:#d08770;">0 </span><span>{
+</span><span>            Err(FdbError::new(</span><span style="color:#d08770;">NO_REMAINING_SEATS</span><span>))
+</span><span>        } </span><span style="color:#b48ead;">else </span><span>{
+</span><mark style="background-color:#65737e30;"><span>            </span><span style="color:#b48ead;">let</span><span> attends_student_kvs =
+</span></mark><mark style="background-color:#65737e30;"><span>                </span><span style="color:#96b5b4;">get_attends_student_keyvalue</span><span>(tr, student).await?;
+</span></mark><mark style="background-color:#65737e30;"><span>
+</span></mark><mark style="background-color:#65737e30;"><span>            </span><span style="color:#b48ead;">if</span><span> attends_student_kvs.</span><span style="color:#96b5b4;">len</span><span>() == </span><span style="color:#d08770;">5 </span><span>{
+</span></mark><mark style="background-color:#65737e30;"><span>                Err(FdbError::new(</span><span style="color:#d08770;">TOO_MANY_CLASSES</span><span>))
+</span></mark><span>            } </span><span style="color:#b48ead;">else </span><span>{
+</span><span>                </span><span style="color:#b48ead;">let</span><span> updated_class_value = ClassValue::new(seats_left - </span><span style="color:#d08770;">1</span><span>);
+</span><span>                tr.</span><span style="color:#96b5b4;">set</span><span>(class_key, updated_class_value);
+</span><span>                tr.</span><span style="color:#96b5b4;">set</span><span>(attends_key, attends_value);
+</span><span>                Ok(())
+</span><span>            }
+</span><span>        }
+</span><span>    }
+</span><span>}
+</span></code></pre>
+<p>Fortunately, we decided on a data model that keeps all of the
+attending records for a single student together. With this approach,
+we can use a single range read to retrieve all the classes that a
+student attends. We return an error if the number of classes has
+reached the limit of five.</p>
+<h3 id="composing-transactions">Composing transactions</h3>
+<p>Oh, just one last feature, we are told. We have students that are
+trying to switch from one popular class to another. By the time they
+drop one class to free up a slot for themselves, the open slot in the
+other class is gone. By the time they see this and try to re-add their
+old class, that slot is gone too! So, can we make it so that a student
+can switch from one class to another without this worry?</p>
+<p>Fortunately, we have FoundationDB, and this sounds an awful lot like
+the transactional property of atomicity --- the all-or-nothing
+behavior that we rely on. All we need to do is <em>compose</em> the <code>dropout</code>
+and <code>signup</code> function into new <code>switch_classes</code> function. This make
+the <code>switch_classes</code> function exceptionally easy:</p>
+<pre data-lang="rust" style="background-color:#2b303b;color:#c0c5ce;" class="language-rust "><code class="language-rust" data-lang="rust"><span>#[</span><span style="color:#bf616a;">derive</span><span>(Clone, Debug)]
+</span><span style="color:#b48ead;">struct </span><span>OldClass(Class);
+</span><span>
+</span><span>#[</span><span style="color:#bf616a;">derive</span><span>(Clone, Debug)]
+</span><span style="color:#b48ead;">struct </span><span>NewClass(Class);
+</span><span>
+</span><span>async </span><span style="color:#b48ead;">fn </span><span style="color:#8fa1b3;">switch_classes</span><span>(
+</span><span>    </span><span style="color:#bf616a;">tr</span><span>: &amp;FdbTransaction,
+</span><span>    </span><span style="color:#bf616a;">student</span><span>: Student,
+</span><span>    </span><span style="color:#bf616a;">old_class</span><span>: OldClass,
+</span><span>    </span><span style="color:#bf616a;">new_class</span><span>: NewClass,
+</span><span>) -&gt; FdbResult&lt;()&gt; {
+</span><span>    </span><span style="color:#b48ead;">let</span><span> old_attends_key = AttendsKey::new(student.</span><span style="color:#96b5b4;">clone</span><span>(), {
+</span><span>        </span><span style="color:#b48ead;">let</span><span> OldClass(class_name) = old_class.</span><span style="color:#96b5b4;">clone</span><span>();
+</span><span>        class_name
+</span><span>    });
+</span><span>    </span><span style="color:#b48ead;">let</span><span> new_attends_key = AttendsKey::new(student.</span><span style="color:#96b5b4;">clone</span><span>(), {
+</span><span>        </span><span style="color:#b48ead;">let</span><span> NewClass(class_name) = new_class.</span><span style="color:#96b5b4;">clone</span><span>();
+</span><span>        class_name
+</span><span>    });
+</span><span>    </span><span style="color:#b48ead;">if</span><span> tr.</span><span style="color:#96b5b4;">get</span><span>(old_attends_key).await?.</span><span style="color:#96b5b4;">is_some</span><span>() &amp;&amp;
+</span><span>        tr.</span><span style="color:#96b5b4;">get</span><span>(new_attends_key).await?.</span><span style="color:#96b5b4;">is_some</span><span>() {
+</span><span>        </span><span style="color:#65737e;">// nothing to switch
+</span><span>        Ok(())
+</span><span>    } </span><span style="color:#b48ead;">else </span><span>{
+</span><span>        </span><span style="color:#65737e;">// switching classes
+</span><span>        </span><span style="color:#96b5b4;">dropout</span><span>(tr, student.</span><span style="color:#96b5b4;">clone</span><span>(), {
+</span><span>            </span><span style="color:#b48ead;">let</span><span> OldClass(class_name) = old_class;
+</span><span>            class_name
+</span><span>        })
+</span><span>        .await?;
+</span><span>        </span><span style="color:#96b5b4;">signup</span><span>(tr, student.</span><span style="color:#96b5b4;">clone</span><span>(), {
+</span><span>            </span><span style="color:#b48ead;">let</span><span> NewClass(class_name) = new_class;
+</span><span>            class_name
+</span><span>        })
+</span><span>        .await?;
+</span><span>        Ok(())
+</span><span>    }
+</span><span>}
+</span></code></pre>
+<p>The simplicity of this implementation belies the sophistication of
+what FoundationDB is taking care for us.</p>
+<p>By dropping the old class and signing up for the new one inside a
+single transaction, we ensure either both steps happen, or that
+neither happens. The first notable thing about <code>switch_classes</code>
+function is that it is transactional, but it also calls the
+transactional functions <code>signup</code> and <code>dropout</code>. Once a transaction is
+created and passed in as <code>tr</code>, the calls to <code>dropout</code> and <code>signup</code>
+both share the same <code>tr</code>. This ensures that they see each other's
+modifications to the database, and all of the changes that both of
+them make in sequence are made transactionally when the
+<code>switch_classes</code> function returns. This compositional capability is
+very powerful.</p>
+<p>Also note that, if an error occurs, for example in <code>signup</code>, and the
+error is not handled in <code>switch_classes</code>, then the error be propagated
+to the calling function. Eventually it will reach the <code>run()</code> where we
+check if the error is a retryable error. If it is not, then
+transaction value is dropped, automatically rolling back all database
+modifications, leaving the database completely unchanged by the
+half-executed function.</p>
+<h3 id="are-we-done">Are we done?</h3>
+<p>Yep, we're done and ready to deploy. If you want to see this entire
+application in one place plus some testing code using Tokio tasks to
+simulate concurrency, look at
+<a href="https://github.com/fdb-rs/website/tree/main/code/crate-fdb/class-scheduling-tutorial/class-scheduling/src/main.rs"><code>class-scheduling/src/main.rs</code></a>.</p>
+<h3 id="deploying-and-scaling">Deploying and scaling</h3>
+<p>Since we store all state for this application in FoundationDB,
+deploying and scaling this solution up is impressively painless. Just
+run a web server, the UI, this back end, and point the whole thing at
+FoundationDB. We can run as many computers with this setup as we want,
+and they can all hit the database at the same time because of the
+transactional integrity of FoundationDB. Also, since all of the state
+in the system is stored in the database, any of these computers can
+fail without any lasting consequences.</p>
+<h3 id="next-steps">Next steps</h3>
+<ul>
+<li>See <a href="https://apple.github.io/foundationdb/data-modeling.html">Data
+Modeling</a>
+for guidance on using tuples and subspaces to enable effective
+storage and retrieval of data.</li>
+<li>See <a href="https://apple.github.io/foundationdb/developer-guide.html">Developer
+Guide</a>
+for general guidance on development using FoundationDB.</li>
+</ul>
+
+        
+          
+<p class="edit-page"><a href="https:&#x2F;&#x2F;github.com&#x2F;fdb-rs&#x2F;website/blob/main/content&#x2F;docs&#x2F;crate-fdb&#x2F;class-scheduling-tutorial.md"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>Edit this page on GitHub</a></p>
+
+        
+        
+<div class="docs-navigation d-flex justify-content-between">
+  
+  
+  
+  
+  
+  <a href="https:&#x2F;&#x2F;fdb-rs.github.io&#x2F;docs&#x2F;crate-fdb&#x2F;client-network-thread&#x2F;">
+    <div class="card my-1">
+      <div class="card-body py-2">
+        &larr; Client Network Thread
+      </div>
+    </div>
+  </a>
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+      
+      
+        
+      
+    
+      
+      
+        
+          
+          
+          <a class="ms-auto" href="https:&#x2F;&#x2F;fdb-rs.github.io&#x2F;docs&#x2F;help&#x2F;contact-us&#x2F;">
+            <div class="card my-1">
+              <div class="card-body py-2">
+                Contact Us &rarr;
+              </div>
+            </div>
+          </a>
+          
+          
+          
+        
+      
+    
+  
+</div>
+
+      </main>
+    </div>
+  </div>
+</div>
+
+
+  
+    
+<footer class="footer text-muted">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 order-last order-lg-first">
+				<ul class="list-inline">
+					
+						<li class="list-inline-item">Built by fdb-rs Contributors.</li>
+					
+				</ul>
+			</div>
+			<div class="col-lg-8 order-first order-lg-last text-lg-end">
+				<ul class="list-inline">
+					
+						
+							<li class="list-inline-item"><a href="https://fdb-rs.github.io/privacy-policy/">Privacy</a></li>
+						
+							<li class="list-inline-item"><a href="https://fdb-rs.github.io/docs/help/code-of-conduct/">Code of Conduct</a></li>
+						
+							<li class="list-inline-item"><a href="https://fdb-rs.github.io/docs/help/contact-us/">Help</a></li>
+						
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+</footer>
+
+  
+
+  
+<script type="text/javascript" src="https://fdb-rs.github.io/js/main.js" defer></script>
+
+  <script type="text/javascript" src="https://fdb-rs.github.io/plugins/elasticlunr.min.js" defer></script>
+  <script type="text/javascript" src="https://fdb-rs.github.io/search_index.en.js" defer></script>
+  <script type="text/javascript" src="https://fdb-rs.github.io/js/search.js" defer></script>
+
+  
+</body>
+</html>

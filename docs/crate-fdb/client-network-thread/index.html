@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" as="font" href="https://fdb-rs.github.io/fonts/vendor/jost/jost-v4-latin-regular.woff2" type="font/woff2" crossorigin>
+  <link rel="preload" as="font" href="https://fdb-rs.github.io/fonts/vendor/jost/jost-v4-latin-700.woff2"  type="font/woff2" crossorigin>
+
+
+<link rel="stylesheet" href="https://fdb-rs.github.io/main.css">
+
+
+
+  
+  
+    
+  
+
+  
+  
+    
+    
+  
+  
+  
+    
+  
+  
+  
+  
+    
+  
+  
+  
+
+
+  <meta name="robots" content="index, follow">
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+
+
+	
+
+
+	
+
+<title>Client Network Thread | fdb-rs</title>
+<meta name="description" content="Client Network Thread">
+<link rel="canonical" href="https://fdb-rs.github.io/docs/crate-fdb/client-network-thread/">
+
+
+
+
+
+
+  
+
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BreadcrumbList",
+    
+      
+      
+        
+        
+        
+        
+        
+        
+        
+        
+          {
+            "@type": "ListItem",
+            "position":  1 ,
+            "name": "Home",
+            "item": "https://fdb-rs.github.io/"
+          },
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  2 ,
+            "name": "Docs",
+            "item": "https://fdb-rs.github.io/docs/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  3 ,
+            "name": "Crate Fdb",
+            "item": "https://fdb-rs.github.io/docs/crate-fdb/"
+          },
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  4 ,
+            "name": "Client Network Thread",
+            "item": "https://fdb-rs.github.io/docs/crate-fdb/client-network-thread/"
+          },
+        
+      
+    
+  }
+</script>
+
+
+
+
+
+
+  <meta name="theme-color" content="#fff">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://fdb-rs.github.io/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://fdb-rs.github.io/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://fdb-rs.github.io/favicon-16x16.png">
+  
+    <link rel="manifest" href="https://fdb-rs.github.io/site.webmanifest" crossorigin>
+  
+
+
+  
+
+</head>
+
+  
+
+<body class="docs single">
+  
+  
+  
+  
+<div class="header-bar fixed-top"></div>
+<header class="navbar fixed-top navbar-expand-md navbar-light">
+	<div class="container">
+		<input class="menu-btn order-0" type="checkbox" id="menu-btn">
+		<label class="menu-icon d-md-none" for="menu-btn"><span class="navicon"></span></label>
+		<a class="navbar-brand order-1 order-md-0 me-auto" href="https://fdb-rs.github.io">fdb-rs</a>
+		<button id="mode" class="btn btn-link order-2 order-md-4" type="button" aria-label="Toggle mode">
+			<span class="toggle-dark"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></span>
+			<span class="toggle-light"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></span>
+		</button>
+		<ul class="navbar-nav fork-me order-3 order-md-5">
+			
+				
+					<li class="nav-item">
+						<a class="nav-link" href="https://github.com/fdb-rs"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg><span class="ms-2 visually-hidden">GitHub</span></a>
+					</li>
+				
+			
+		</ul>
+		<div class="collapse navbar-collapse order-4 order-md-1">
+			<ul class="navbar-nav main-nav me-auto order-5 order-md-2">
+				
+					
+				
+				
+				
+					
+						<li class="nav-item docs active">
+							<a class="nav-link" href="https://fdb-rs.github.io/docs/getting-started/introduction/">Docs</a>
+						</li>
+					
+						<li class="nav-item">
+							<a class="nav-link" href="https://fdb-rs.github.io/blog/">Blog</a>
+						</li>
+					
+				
+			</ul>
+			<div class="break order-6 d-md-none"></div>
+			
+				<form class="navbar-form flex-grow-1 order-7 order-md-3">
+					<input id="userinput" class="form-control is-search" type="search" placeholder="Search docs..."
+						aria-label="Search docs..." autocomplete="off">
+					<div id="suggestions" class="shadow bg-white rounded"></div>
+				</form>
+			
+		</div>
+	</div>
+</header>
+
+
+
+  
+<div class="wrap container" role="document">
+  <div class="content">
+    <div class="row flex-xl-nowrap">
+	  
+<div class="col-lg-5 col-xl-4 docs-sidebar">
+	<nav class="docs-links" aria-label="Main navigation">
+			
+			
+			
+			
+					
+					
+					
+							<h3>Getting Started</h3>
+							<ul class="list-unstyled">
+							                           
+									<li><a class="docs-link" href="https://fdb-rs.github.io/docs/getting-started/introduction/">Introduction</a></li>
+							
+					</ul>
+					
+					
+					
+					
+							<h3>fdb crate</h3>
+							<ul class="list-unstyled">
+							                           
+									<li><a class="docs-link" href="https://fdb-rs.github.io/docs/crate-fdb/prerequisites/">Prerequisites</a></li>
+							                           
+									<li><a class="docs-link" href="https://fdb-rs.github.io/docs/crate-fdb/linking/">Linking with C library</a></li>
+							                           
+									<li><a class="docs-link active" href="https://fdb-rs.github.io/docs/crate-fdb/client-network-thread/">Client Network Thread</a></li>
+							                           
+									<li><a class="docs-link" href="https://fdb-rs.github.io/docs/crate-fdb/class-scheduling-tutorial/">Class Scheduling Tutorial</a></li>
+							
+					</ul>
+					
+					
+					
+					
+							<h3>Help</h3>
+							<ul class="list-unstyled">
+							                           
+									<li><a class="docs-link" href="https://fdb-rs.github.io/docs/help/contact-us/">Contact Us</a></li>
+							                           
+									<li><a class="docs-link" href="https://fdb-rs.github.io/docs/help/code-of-conduct/">Code of Conduct</a></li>
+							
+					</ul>
+					
+					
+			
+	</nav>
+</div>
+
+	  
+  
+  <nav class="docs-toc d-none d-xl-block col-xl-3" aria-label="Secondary navigation">
+  	<div class="page-links">
+  			<h3>On this page</h3>
+  			<nav id="TableOfContents">
+  					<ul>
+  							
+  							<li><a href="https://fdb-rs.github.io/docs/crate-fdb/client-network-thread/#identifying-the-cluster-file">Identifying the cluster file</a></li>
+  							
+  							
+  							<li><a href="https://fdb-rs.github.io/docs/crate-fdb/client-network-thread/#select-api-version">Select API version</a></li>
+  							
+  							
+  							<li><a href="https://fdb-rs.github.io/docs/crate-fdb/client-network-thread/#start-client-network-thread">Start Client Network Thread</a></li>
+  							
+  							
+  							<li><a href="https://fdb-rs.github.io/docs/crate-fdb/client-network-thread/#open-database">Open Database</a></li>
+  							
+  							
+  							<li><a href="https://fdb-rs.github.io/docs/crate-fdb/client-network-thread/#start-tokio-runtime">Start Tokio Runtime</a></li>
+  							
+  							
+  							<li><a href="https://fdb-rs.github.io/docs/crate-fdb/client-network-thread/#stop-client-network-thread">Stop Client Network Thread</a></li>
+  							
+  							
+  					</ul>
+  			</nav>
+  	</div>
+  </nav>
+  
+
+      <main class="docs-content col-lg-11 col-xl-9">
+        <h1>Client Network Thread</h1>
+        
+        <p><em>Full working code for concepts described in this section is
+<a href="https://github.com/fdb-rs/website/tree/main/code/crate-fdb/client-network-thread">here</a></em>.</p>
+<p>FoundationDB clients are <strong>required</strong> to start a <a href="https://apple.github.io/foundationdb/api-general.html#client-network-thread">network
+thread</a>
+before they can communicate with the cluster.</p>
+<p>Each language binding provides its own mechanism for starting client
+network thread. An important consideration is that while the client
+network thread can be started and stopped, once it has been stopped,
+it cannot be started again.</p>
+<p>For our Tokio binding, we recommend that you start the client network
+thread and open the database in the main thread before starting the
+Tokio runtime. Once the Tokio runtime completes, you can safely close
+the database and stop the network thread.</p>
+<p>In the next sections we describe how this can be accomplished in more
+detail.</p>
+<h2 id="identifying-the-cluster-file">Identifying the cluster file</h2>
+<p>Begin by identifying the location of the FoundationDB <a href="https://apple.github.io/foundationdb/administration.html#cluster-files">cluster
+file</a>. It
+is common practice to specify this file using the environment variable
+<code>FDB_CLUSTER_FILE</code>.</p>
+<pre data-lang="rust" style="background-color:#2b303b;color:#c0c5ce;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#b48ead;">let</span><span> fdb_cluster_file = env::var(&quot;</span><span style="color:#a3be8c;">FDB_CLUSTER_FILE</span><span>&quot;)
+</span><span>    .</span><span style="color:#96b5b4;">expect</span><span>(&quot;</span><span style="color:#a3be8c;">FDB_CLUSTER_FILE not defined!</span><span>&quot;);
+</span></code></pre>
+<h2 id="select-api-version">Select API version</h2>
+<p>Before starting the client network you need to specify <a href="https://apple.github.io/foundationdb/api-general.html#api-versions">API
+version</a>
+to use. This can be done as follows.</p>
+<pre data-lang="rust" style="background-color:#2b303b;color:#c0c5ce;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#b48ead;">unsafe </span><span>{
+</span><span>    fdb::select_api_version(</span><span style="color:#d08770;">630</span><span>);
+</span><span>    </span><span style="color:#65737e;">// ...
+</span><span>}
+</span></code></pre>
+<p>Here we are selecting API version <code>630</code>. In Rust <code>unsafe</code> keyword is
+used to indicate to the user of API that there invariants that cannot
+be checked by the compiler.</p>
+<p>For our bindings, we have marked initialization APIs as <code>unsafe</code>
+primarily to help you understand the interaction that between Tokio
+runtime and FoundationDB client network thread.</p>
+<h2 id="start-client-network-thread">Start Client Network Thread</h2>
+<p>Once the API version is selected you can start the client network
+thread as follows.</p>
+<pre data-lang="rust" style="background-color:#2b303b;color:#c0c5ce;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#b48ead;">unsafe </span><span>{
+</span><span>    fdb::select_api_version(</span><span style="color:#d08770;">630</span><span>);
+</span><span>    fdb::start_network();
+</span><span>}
+</span></code></pre>
+<h2 id="open-database">Open Database</h2>
+<p>After the client network thread as started, you can open the
+FoundationDB database specified by the cluster file.</p>
+<pre data-lang="rust" style="background-color:#2b303b;color:#c0c5ce;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#b48ead;">let</span><span> fdb_database = fdb::open_database(fdb_cluster_file)?;
+</span></code></pre>
+<p><a href="https://docs.rs/fdb/0.2.0/fdb/fn.open_database.html"><code>open_database</code></a>
+function returns a value of
+<a href="https://docs.rs/fdb/0.2.0/fdb/error/type.FdbResult.html"><code>FdbResult</code></a>
+type.</p>
+<p><code>FdbResult</code> type provides a common error handling abstraction for all
+APIs in the crate. In addition it also signals
+<a href="https://apple.github.io/foundationdb/api-error-codes.html">errors</a>
+that might have occurred in the C API.</p>
+<p>In the above code <code>fdb_database</code> is a value of
+<a href="https://docs.rs/fdb/0.2.0/fdb/database/struct.FdbDatabase.html"><code>FdbDatabase</code></a>
+type and points to the FoundationDB database specified by the cluster
+file. </p>
+<h2 id="start-tokio-runtime">Start Tokio Runtime</h2>
+<p>After you have obtained a value of <code>FdbDatabase</code> type, you can start
+the Tokio Runtime, its the main <code>async</code> task and move a cloned value
+of <code>FdbDatabase</code> into the main Tokio task.</p>
+<pre data-lang="rust" style="background-color:#2b303b;color:#c0c5ce;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#b48ead;">let</span><span> rt = Runtime::new()?;
+</span><span>
+</span><span style="color:#b48ead;">let</span><span> cloned_fdb_database = fdb_database.</span><span style="color:#96b5b4;">clone</span><span>();
+</span><span>
+</span><span>rt.</span><span style="color:#96b5b4;">block_on</span><span>(async {
+</span><span>    </span><span style="color:#b48ead;">let</span><span> fdb_database = cloned_fdb_database;
+</span><span>
+</span><span>    </span><span style="color:#65737e;">// your main async app here
+</span><span>    
+</span><span>    Result::&lt;(), Box&lt;dyn Error&gt;&gt;::Ok(())
+</span><span>})?;
+</span></code></pre>
+<p>At this point, <code>rt.block_on</code> will block the main thread. In your
+application you will have multiple running threads. They would include
+threads launched by Tokio runtime and FoundationDB client network
+thread.</p>
+<h2 id="stop-client-network-thread">Stop Client Network Thread</h2>
+<p>Once <code>rt.block_on</code> returns, you can gracefully stop the client network
+thread by doing the following.</p>
+<pre data-lang="rust" style="background-color:#2b303b;color:#c0c5ce;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#96b5b4;">drop</span><span>(fdb_database);
+</span><span>
+</span><span style="color:#b48ead;">unsafe </span><span>{
+</span><span>    fdb::stop_network();
+</span><span>}
+</span></code></pre>
+<p>This should allow you to cleanly exit your application.</p>
+
+        
+          
+<p class="edit-page"><a href="https:&#x2F;&#x2F;github.com&#x2F;fdb-rs&#x2F;website/blob/main/content&#x2F;docs&#x2F;crate-fdb&#x2F;client-network-thread.md"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>Edit this page on GitHub</a></p>
+
+        
+        
+<div class="docs-navigation d-flex justify-content-between">
+  
+  
+  
+  
+  
+  <a href="https:&#x2F;&#x2F;fdb-rs.github.io&#x2F;docs&#x2F;crate-fdb&#x2F;linking&#x2F;">
+    <div class="card my-1">
+      <div class="card-body py-2">
+        &larr; Linking with C library
+      </div>
+    </div>
+  </a>
+  
+
+  
+  
+  
+  
+  
+    <a class="ms-auto" href="https:&#x2F;&#x2F;fdb-rs.github.io&#x2F;docs&#x2F;crate-fdb&#x2F;class-scheduling-tutorial&#x2F;">
+      <div class="card my-1">
+        <div class="card-body py-2">
+          Class Scheduling Tutorial &rarr;
+        </div>
+      </div>
+    </a>
+  
+</div>
+
+      </main>
+    </div>
+  </div>
+</div>
+
+
+  
+    
+<footer class="footer text-muted">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 order-last order-lg-first">
+				<ul class="list-inline">
+					
+						<li class="list-inline-item">Built by fdb-rs Contributors.</li>
+					
+				</ul>
+			</div>
+			<div class="col-lg-8 order-first order-lg-last text-lg-end">
+				<ul class="list-inline">
+					
+						
+							<li class="list-inline-item"><a href="https://fdb-rs.github.io/privacy-policy/">Privacy</a></li>
+						
+							<li class="list-inline-item"><a href="https://fdb-rs.github.io/docs/help/code-of-conduct/">Code of Conduct</a></li>
+						
+							<li class="list-inline-item"><a href="https://fdb-rs.github.io/docs/help/contact-us/">Help</a></li>
+						
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+</footer>
+
+  
+
+  
+<script type="text/javascript" src="https://fdb-rs.github.io/js/main.js" defer></script>
+
+  <script type="text/javascript" src="https://fdb-rs.github.io/plugins/elasticlunr.min.js" defer></script>
+  <script type="text/javascript" src="https://fdb-rs.github.io/search_index.en.js" defer></script>
+  <script type="text/javascript" src="https://fdb-rs.github.io/js/search.js" defer></script>
+
+  
+</body>
+</html>
