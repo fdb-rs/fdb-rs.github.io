@@ -373,7 +373,7 @@ programs to maintain compatibility even if the API is modified in
 future versions. Next we open a FoundationDB database. The API will
 connect to the FoundationDB cluster using the cluster file specified
 by <code>FDB_CLUSTER_FILE</code>. If you specify an empty path (<code>&quot;&quot;</code>) to
-<a href="https://docs.rs/fdb/0.2.0/fdb/fn.open_database.html"><code>fdb::open_database</code></a>
+<a href="https://docs.rs/fdb/0.2.1/fdb/fn.open_database.html"><code>fdb::open_database</code></a>
 then the client will connect to the cluster as indicated by the
 <a href="https://apple.github.io/foundationdb/administration.html#default-cluster-file">default cluster
 file</a>.</p>
@@ -390,10 +390,10 @@ file</a>.</p>
 </span></code></pre>
 <p>We are ready to use the database. First, let us write a key-value
 pair. We do this by executing a transaction with
-<a href="https://docs.rs/fdb/0.2.0/fdb/database/struct.FdbDatabase.html#method.run"><code>run()</code></a>
+<a href="https://docs.rs/fdb/0.2.1/fdb/database/struct.FdbDatabase.html#method.run"><code>run()</code></a>
 method. We will also use methods on type
-<a href="https://docs.rs/fdb/0.2.0/fdb/tuple/struct.Tuple.html"><code>Tuple</code></a> to
-<a href="https://docs.rs/fdb/0.2.0/fdb/tuple/struct.Tuple.html#method.pack"><code>pack()</code></a>
+<a href="https://docs.rs/fdb/0.2.1/fdb/tuple/struct.Tuple.html"><code>Tuple</code></a> to
+<a href="https://docs.rs/fdb/0.2.1/fdb/tuple/struct.Tuple.html#method.pack"><code>pack()</code></a>
 data for storage in the database.</p>
 <pre data-lang="rust" style="background-color:#2b303b;color:#c0c5ce;" class="language-rust "><code class="language-rust" data-lang="rust"><span>fdb_database
 </span><span>    .</span><span style="color:#96b5b4;">run</span><span>(|</span><span style="color:#bf616a;">tr</span><span>| async </span><span style="color:#b48ead;">move </span><span>{
@@ -552,9 +552,9 @@ immediately creating the FoundationDB tuple in <code>key_bytes</code>. By keepin
 <code>key_tup</code> and <code>key_bytes</code> visually next to each other, the scope for
 re-ordering errors is minimized.</p>
 <p>Lastly, when we look at
-<a href="https://docs.rs/fdb/0.2.0/fdb/transaction/trait.Transaction.html"><code>Transaction</code></a>
+<a href="https://docs.rs/fdb/0.2.1/fdb/transaction/trait.Transaction.html"><code>Transaction</code></a>
 and
-<a href="https://docs.rs/fdb/0.2.0/fdb/transaction/trait.ReadTransaction.html"><code>ReadTransaction</code></a>
+<a href="https://docs.rs/fdb/0.2.1/fdb/transaction/trait.ReadTransaction.html"><code>ReadTransaction</code></a>
 traits, we will find that many of the methods accepts values of type
 <code>impl Into&lt;Key&gt;</code> and <code>impl Into&lt;Value&gt;</code>. We can take advantage of this
 design by implementing <code>From</code> trait on our types. Once we have the
@@ -638,25 +638,25 @@ a retry loop</em> to ensure that the transaction eventually commits.</p>
 <p>You can abort a transaction by creating value <code>Err(FdbError::new(err)</code>
 where <code>err</code> is in the range <code>100.=999</code>. This provides an unified
 approach to error handling in FoundationDB Tokio APIs. See
-<a href="https://docs.rs/fdb/0.2.0/fdb/error/index.html"><code>error</code></a> module and
-<a href="https://docs.rs/fdb/0.2.0/fdb/error/struct.FdbError.html"><code>FdbError</code></a>
+<a href="https://docs.rs/fdb/0.2.1/fdb/error/index.html"><code>error</code></a> module and
+<a href="https://docs.rs/fdb/0.2.1/fdb/error/struct.FdbError.html"><code>FdbError</code></a>
 type documentation for details.</p>
 <p>Note that by default, the operation will be retried an infinite number
 of times and the transaction will never time out. It is therefore
 recommended that the client choose a default transaction retry limit
 or timeout value that is suitable for their application. This can be
 set either at the transaction level by passing
-<a href="https://docs.rs/fdb/0.2.0/fdb/transaction/enum.TransactionOption.html#variant.RetryLimit"><code>TransactionOption::RetryLimit</code></a>
+<a href="https://docs.rs/fdb/0.2.1/fdb/transaction/enum.TransactionOption.html#variant.RetryLimit"><code>TransactionOption::RetryLimit</code></a>
 and
-<a href="https://docs.rs/fdb/0.2.0/fdb/transaction/enum.TransactionOption.html#variant.Timeout"><code>Transaction::Timeout</code></a>
+<a href="https://docs.rs/fdb/0.2.1/fdb/transaction/enum.TransactionOption.html#variant.Timeout"><code>Transaction::Timeout</code></a>
 to
-<a href="https://docs.rs/fdb/0.2.0/fdb/transaction/trait.ReadTransaction.html#tymethod.set_option"><code>ReadTransaction::set_option</code></a>
+<a href="https://docs.rs/fdb/0.2.1/fdb/transaction/trait.ReadTransaction.html#tymethod.set_option"><code>ReadTransaction::set_option</code></a>
 method or at the database level by passing
-<a href="https://docs.rs/fdb/0.2.0/fdb/database/enum.DatabaseOption.html#variant.TransactionRetryLimit"><code>DatabaseOption::TransactionRetryLimit</code></a>
+<a href="https://docs.rs/fdb/0.2.1/fdb/database/enum.DatabaseOption.html#variant.TransactionRetryLimit"><code>DatabaseOption::TransactionRetryLimit</code></a>
 and
-<a href="https://docs.rs/fdb/0.2.0/fdb/database/enum.DatabaseOption.html#variant.TransactionRetryLimit"><code>DatabaseOption::TransactionRetryLimit</code></a>
+<a href="https://docs.rs/fdb/0.2.1/fdb/database/enum.DatabaseOption.html#variant.TransactionRetryLimit"><code>DatabaseOption::TransactionRetryLimit</code></a>
 to
-<a href="https://docs.rs/fdb/0.2.0/fdb/database/struct.FdbDatabase.html#method.set_option"><code>FdbDatabase::set_option</code></a>
+<a href="https://docs.rs/fdb/0.2.1/fdb/database/struct.FdbDatabase.html#method.set_option"><code>FdbDatabase::set_option</code></a>
 method. For example, one can set a one minute timeout on each transaction and a default retry limit of 100 by calling:</p>
 <pre data-lang="rust" style="background-color:#2b303b;color:#c0c5ce;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#65737e;">// 60,000 ms = 1 minute
 </span><span>fdb_database.</span><span style="color:#96b5b4;">set_option</span><span>(DatabaseOption::TransactionTimeout(</span><span style="color:#d08770;">60000</span><span>))?;
@@ -738,7 +738,7 @@ implementing <code>available_classes</code> function. Because FoundationDB sorts
 its data by key and therefore has efficient range-read capability, we
 can retrieve all of the classes in a single database call. We find
 this range of keys with
-<a href="https://docs.rs/fdb/0.2.0/fdb/transaction/trait.ReadTransaction.html#tymethod.get_range"><code>get_range()</code></a>
+<a href="https://docs.rs/fdb/0.2.1/fdb/transaction/trait.ReadTransaction.html#tymethod.get_range"><code>get_range()</code></a>
 method.</p>
 <pre data-lang="rust" style="background-color:#2b303b;color:#c0c5ce;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#b48ead;">const </span><span style="color:#d08770;">KEY_CONVERTION_ERROR</span><span>: </span><span style="color:#b48ead;">i32 </span><span>= </span><span style="color:#d08770;">999</span><span>;
 </span><span>
@@ -815,19 +815,19 @@ method.</p>
 </span><span>}
 </span></code></pre>
 <p>In general, the
-<a href="https://docs.rs/fdb/0.2.0/fdb/tuple/struct.Tuple.html#method.range"><code>Tuple::range()</code></a>
+<a href="https://docs.rs/fdb/0.2.1/fdb/tuple/struct.Tuple.html#method.range"><code>Tuple::range()</code></a>
 method returns a
-<a href="https://docs.rs/fdb/0.2.0/fdb/range/struct.Range.html"><code>Range</code></a>
+<a href="https://docs.rs/fdb/0.2.1/fdb/range/struct.Range.html"><code>Range</code></a>
 representing all the key-value pairs starting with the specified
 tuple. In this case we want all classes, so we call <code>Tuple::range()</code>
 with <code>(&quot;class&quot;,)</code>. Once we have the value of <code>Range</code> type, we get the
-<a href="https://docs.rs/fdb/0.2.0/fdb/struct.KeySelector.html"><code>KeySelector</code></a>
+<a href="https://docs.rs/fdb/0.2.1/fdb/struct.KeySelector.html"><code>KeySelector</code></a>
 associated with the <code>Range</code>. The <code>KeySelector</code> can then be used to
 call <code>get_range</code> method which returns a Tokio
 <a href="https://docs.rs/tokio-stream/0.1.8/tokio_stream/trait.StreamExt.html">Stream</a>
 of the key-values specified by <code>KeySelector</code>. To extract the class
 name, we unpack the key using
-<a href="https://docs.rs/fdb/0.2.0/fdb/tuple/struct.Tuple.html#method.from_bytes"><code>Tuple::fromBytes()</code></a>
+<a href="https://docs.rs/fdb/0.2.1/fdb/tuple/struct.Tuple.html#method.from_bytes"><code>Tuple::fromBytes()</code></a>
 and take its second part. (The first part is the prefix <code>&quot;class&quot;</code>).</p>
 <h3 id="signing-up-for-a-class">Signing up for a class</h3>
 <p>We finally get to the crucial function. A student has decided on a
@@ -857,7 +857,7 @@ a <code>student</code> and a <code>class_name</code>.</p>
 </span></code></pre>
 <p>Of course, to actually drop the student from the class, we need to be
 able to delete a record from the database. We do this with the
-<a href="https://docs.rs/fdb/0.2.0/fdb/transaction/trait.Transaction.html#tymethod.clear"><code>clear()</code></a>
+<a href="https://docs.rs/fdb/0.2.1/fdb/transaction/trait.Transaction.html#tymethod.clear"><code>clear()</code></a>
 method.</p>
 <h3 id="done">Done?</h3>
 <p>We report back to the project leader that our application is done ---
