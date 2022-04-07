@@ -17,19 +17,19 @@
   
   
   
-    
-  
   
     
   
+
   
   
     
-      
     
   
   
+  
     
+  
   
   
   
@@ -49,14 +49,46 @@
 
 	
 
-<title>Rajiv M Ranganath | fdb-rs</title>
-<meta name="description" content="Contributor to fdb-rs crates">
-<link rel="canonical" href="https://fdb-rs.github.io/authors/rajivr/">
+<title>Introducing FoundationDB Client API for Tokio | fdb-rs</title>
+<meta name="description" content="Rust crates for working with FountationDB and Tokio">
+<link rel="canonical" href="https://fdb-rs.github.io/blog/introducing-fdb-crate/">
 
 
 
 
 
+
+  
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "/blog/introducing-fdb-crate/"
+      },
+      "headline": "Introducing FoundationDB Client API for Tokio",
+      "image": ,
+      "datePublished": "2022-04-07T11:00:00+00:00",
+      "dateModified": "2022-04-07T11:00:00+00:00",
+      "author": {
+        "@type": "Organization",
+        "name": "Introducing FoundationDB Client API for Tokio"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Introducing FoundationDB Client API for Tokio",
+        
+        "logo": {
+          "@type": "ImageObject",
+          "url": ""
+        }
+        
+      },
+      "description": "Rust crates for working with FountationDB and Tokio"
+    }
+    </script>
+  
 
 
 
@@ -88,11 +120,17 @@
           {
             "@type": "ListItem",
             "position":  2 ,
-            "name": "Authors",
-            "item": "https://fdb-rs.github.io/authors/"
+            "name": "Blog",
+            "item": "https://fdb-rs.github.io/blog/"
           },
         
       
+        
+        
+        
+        
+        
+        
         
         
         
@@ -106,14 +144,15 @@
           {
             "@type": "ListItem",
             "position":  3 ,
-            "name": "Rajivr",
-            "item": "https://fdb-rs.github.io/authors/rajivr/"
+            "name": "Introducing Fdb Crate",
+            "item": "https://fdb-rs.github.io/blog/introducing-fdb-crate/"
           },
         
       
     
   }
 </script>
+
 
 
 
@@ -134,12 +173,10 @@
 </head>
 
   
-    
-  
 
-<body class="contributors list">
+<body class="blog single">
   
-    
+  
 <div class="header-bar fixed-top"></div>
 <header class="navbar fixed-top navbar-expand-md navbar-light">
 	<div class="container">
@@ -171,7 +208,7 @@
 							<a class="nav-link" href="https://fdb-rs.github.io/docs/getting-started/introduction/">Docs</a>
 						</li>
 					
-						<li class="nav-item">
+						<li class="nav-item blog active">
 							<a class="nav-link" href="https://fdb-rs.github.io/blog/">Blog</a>
 						</li>
 					
@@ -189,7 +226,7 @@
 	</div>
 </header>
 
-  
+
 
   
 <div class="wrap container" role="document">
@@ -197,23 +234,82 @@
     <div class="row justify-content-center">
       <div class="col-md-12 col-lg-10 col-xxl-8">
         <article>
-          <h1 class="text-center">Rajiv M Ranganath</h1>
-          <div class="text-center"><p>Contributor to <strong>fdb-rs</strong>.</p>
-<p><a href="https://github.com/rajivr">@rajivr</a></p>
-</div>
-			    <div class="card-list">
+          <div class="blog-header">
+            <h1>Introducing FoundationDB Client API for Tokio</h1>
             
-					    <div class="card">
-						    <div class="card-body">
-							    <h2 class="h3"><a class="stretched-link text-body" href="https:&#x2F;&#x2F;fdb-rs.github.io&#x2F;blog&#x2F;introducing-fdb-crate&#x2F;">Introducing FoundationDB Client API for Tokio</a></h2>
-								    
-                    
 <p><small>Posted 2022-04-07 07:00:00 by <a class="stretched-link position-relative" href="https://fdb-rs.github.io/authors/rajivr/">rajivr</a>&nbsp;&hyphen;&nbsp;<strong>3&nbsp;min read</strong></small><p>
 
-					    	</div>
-					    </div>
-				    
-			    </div>
+          </div>
+          
+          <p>I am happy to announce the release of the
+<a href="https://docs.rs/fdb/0.2.1/fdb/">fdb</a> crate, which provides
+<a href="https://www.foundationdb.org/">FoundationDB</a> client API for
+<a href="https://tokio.rs/">Tokio</a>. You can find guide-level documentation for
+the fdb crate <a href="https://fdb-rs.github.io/docs/crate-fdb/prerequisites/">here</a>.</p>
+<p>FoundationDB is a distributed key-value store with <a href="https://jepsen.io/consistency">strict
+serializable</a> ACID
+transactions. FoundationDB is known for its reliability and
+scalability.</p>
+<p>Tokio and FoundationDB are complementary technologies for building
+cloud-scale applications. Tokio runtime and its ecosystem of crates
+such as Tower, Hyper, Tonic, gives us a great way to develop
+applications whose state can be managed using FoundationDB.</p>
+<p>In the <a href="https://github.com/fdb-rs/">fdb-rs</a> GitHub organization,
+together with the Tokio and FoundationDB community, I hope to develop
+crates related to FoundationDB that work well with the Tokio ecosystem
+crates.</p>
+<p>Our first crate is the fdb crate. It is also a foundational crate that
+interacts with the C library. The fdb crate provides idiomatic Tokio
+and Rust APIs that we can use directly in our applications and also to
+build other crates. In FoundationDB terminology the latter crates
+would be referred to as
+<a href="https://apple.github.io/foundationdb/layer-concept.html">layers</a>.</p>
+<p>No conversation around FoundationDB would be complete without a word
+about correctness and testing.</p>
+<p>Under the hood, most of the fdb crate is written in a functional
+programming style. FoundationDB has a <a href="https://apple.github.io/foundationdb/api-python.html#api-python-tuple-layer">tuple
+layer</a>
+which provides a standardized mechanism of converting key-value byte
+strings into a
+<a href="https://en.wikipedia.org/wiki/S-expression">s-expression</a> like data
+construct. Parsing code for the tuple layer is written using the
+excellent <a href="https://github.com/Geal/nom">nom</a> parser-combinator
+library.</p>
+<p>Within the fdb crate when doing asynchronous range reads of key-value
+pairs and converting them into a Tokio stream, there is a need to run
+a state machine. For correctness and understandability, this <a href="https://github.com/fdb-rs/fdb/blob/fdb-0.2.1/fdb/sismic/range_result_state_machine.yaml">state
+machine</a>
+has been modeled using
+<a href="https://sismic.readthedocs.io/en/latest/">sismic</a>.</p>
+<p>Besides regular unit and integration tests, the fdb crate continuously
+runs
+<a href="https://github.com/fdb-rs/fdb/actions/workflows/schedule-6_3_23.yml">thousands</a>
+of simulation tests which checks the bindings using a mechanism called
+<a href="https://github.com/apple/foundationdb/blob/6.3.23/bindings/bindingtester/spec/bindingApiTester.md">binding
+tester</a>. Official
+FoundationDB bindings for other languages are tested this way, and we
+do the same for our Tokio Rust bindings.</p>
+<p>At this point the fdb crate is reasonably stable, and I do not expect
+any major API changes to it. Most of the future work will be focused
+on adding upcoming FoundationDB 7.x support to the fdb crate and
+exploring how we can create a minimal
+<a href="https://foundationdb.github.io/fdb-record-layer/">record-layer</a> like
+crate for Tokio.</p>
+<p>Tokio and FoundationDB community members have been extremely helpful
+in making the fdb crate happen.</p>
+<p>From the Tokio community, I would like to thank <a href="https://ryhl.io/">Alice
+Ryhl</a> who answered many Tokio related questions on
+Discord.</p>
+<p>From the FoundationDB community, I would like to thank <a href="https://forums.foundationdb.org/u/alloc">Alec
+Grieser</a>, <a href="https://forums.foundationdb.org/u/andrew.noyes">Andrew
+Noyes</a>,
+<a href="https://forums.foundationdb.org/u/ajbeamon">A.J. Beamon</a>, <a href="https://forums.foundationdb.org/u/jzhou">Jingyu
+Zhou</a>, <a href="https://forums.foundationdb.org/u/alexmiller">Alex
+Miller</a> and <a href="https://forums.foundationdb.org/u/PierreZ">Pierre
+Zemb</a> for providing
+detailed replies to my questions on the FoundationDB forum.</p>
+<p>The fdb crate would not have been possible without your help!</p>
+
         </article>
       </div>
     </div>
