@@ -334,11 +334,11 @@ is common practice to specify this file using the environment variable
 version</a>
 to use. This can be done as follows.</p>
 <pre data-lang="rust" style="background-color:#2b303b;color:#c0c5ce;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#b48ead;">unsafe </span><span>{
-</span><span>    fdb::select_api_version(</span><span style="color:#d08770;">630</span><span>);
+</span><span>    fdb::select_api_version(</span><span style="color:#d08770;">710</span><span>);
 </span><span>    </span><span style="color:#65737e;">// ...
 </span><span>}
 </span></code></pre>
-<p>Here we are selecting API version <code>630</code>. In Rust <code>unsafe</code> keyword is
+<p>Here we are selecting API version <code>710</code>. In Rust <code>unsafe</code> keyword is
 used to indicate to the user of API that there invariants that cannot
 be checked by the compiler.</p>
 <p>For our bindings, we have marked initialization APIs as <code>unsafe</code>
@@ -348,7 +348,7 @@ runtime and FoundationDB client network thread.</p>
 <p>Once the API version is selected you can start the client network
 thread as follows.</p>
 <pre data-lang="rust" style="background-color:#2b303b;color:#c0c5ce;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#b48ead;">unsafe </span><span>{
-</span><span>    fdb::select_api_version(</span><span style="color:#d08770;">630</span><span>);
+</span><span>    fdb::select_api_version(</span><span style="color:#d08770;">710</span><span>);
 </span><span>    fdb::start_network();
 </span><span>}
 </span></code></pre>
@@ -357,16 +357,16 @@ thread as follows.</p>
 FoundationDB database specified by the cluster file.</p>
 <pre data-lang="rust" style="background-color:#2b303b;color:#c0c5ce;" class="language-rust "><code class="language-rust" data-lang="rust"><span style="color:#b48ead;">let</span><span> fdb_database = fdb::open_database(fdb_cluster_file)?;
 </span></code></pre>
-<p><a href="https://docs.rs/fdb/0.2.2/fdb/fn.open_database.html"><code>open_database</code></a>
+<p><a href="https://docs.rs/fdb/0.3.1/fdb/fn.open_database.html"><code>open_database</code></a>
 function returns a value of
-<a href="https://docs.rs/fdb/0.2.2/fdb/error/type.FdbResult.html"><code>FdbResult</code></a>
+<a href="https://docs.rs/fdb/0.3.1/fdb/error/type.FdbResult.html"><code>FdbResult</code></a>
 type.</p>
 <p><code>FdbResult</code> type provides a common error handling abstraction for all
 APIs in the crate. In addition it also signals
 <a href="https://apple.github.io/foundationdb/api-error-codes.html">errors</a>
 that might have occurred in the C API.</p>
 <p>In the above code <code>fdb_database</code> is a value of
-<a href="https://docs.rs/fdb/0.2.2/fdb/database/struct.FdbDatabase.html"><code>FdbDatabase</code></a>
+<a href="https://docs.rs/fdb/0.3.1/fdb/database/struct.FdbDatabase.html"><code>FdbDatabase</code></a>
 type and points to the FoundationDB database specified by the cluster
 file. </p>
 <h2 id="start-tokio-runtime">Start Tokio Runtime</h2>
