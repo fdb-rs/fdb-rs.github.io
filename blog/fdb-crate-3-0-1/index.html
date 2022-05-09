@@ -15,14 +15,21 @@
 
   
   
+  
+  
+  
     
   
 
   
   
+    
+    
+  
+  
   
     
-    
+  
   
   
   
@@ -42,14 +49,46 @@
 
 	
 
-<title>Blog | fdb-rs</title>
-<meta name="description" content="Blog">
-<link rel="canonical" href="https://fdb-rs.github.io/blog/">
+<title>fdb crate v0.3.1 released | fdb-rs</title>
+<meta name="description" content="Rust crates for working with FountationDB and Tokio">
+<link rel="canonical" href="https://fdb-rs.github.io/blog/fdb-crate-3-0-1/">
 
 
 
 
 
+
+  
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "/blog/fdb-crate-3-0-1/"
+      },
+      "headline": "fdb crate v0.3.1 released",
+      "image": ,
+      "datePublished": "2022-04-09T11:00:00+00:00",
+      "dateModified": "2022-04-09T11:00:00+00:00",
+      "author": {
+        "@type": "Organization",
+        "name": "fdb crate v0.3.1 released"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "fdb crate v0.3.1 released",
+        
+        "logo": {
+          "@type": "ImageObject",
+          "url": ""
+        }
+        
+      },
+      "description": "Rust crates for working with FountationDB and Tokio"
+    }
+    </script>
+  
 
 
 
@@ -86,9 +125,40 @@
           },
         
       
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+          
+          
+          {
+            "@type": "ListItem",
+            "position":  3 ,
+            "name": "Fdb Crate 3 0 1",
+            "item": "https://fdb-rs.github.io/blog/fdb-crate-3-0-1/"
+          },
+        
+      
     
   }
 </script>
+
 
 
 
@@ -110,9 +180,7 @@
 
   
 
-<body class="blog list">
-  
-  
+<body class="blog single">
   
   
 <div class="header-bar fixed-top"></div>
@@ -172,31 +240,86 @@
     <div class="row justify-content-center">
       <div class="col-md-12 col-lg-10 col-xxl-8">
         <article>
-          <h1 class="text-center">Blog</h1>
-          <div class="card-list">
+          <div class="blog-header">
+            <h1>fdb crate v0.3.1 released</h1>
             
-            <div class="card">
-              <div class="card-body">
-                <h2 class="h3"><a class="stretched-link text-body" href="https:&#x2F;&#x2F;fdb-rs.github.io&#x2F;blog&#x2F;fdb-crate-3-0-1&#x2F;">fdb crate v0.3.1 released</a></h2>
-                
-                
 <p><small>Posted 2022-04-09 07:00:00 by <a class="stretched-link position-relative" href="https://fdb-rs.github.io/authors/rajivr/">rajivr</a>&nbsp;&hyphen;&nbsp;<strong>3&nbsp;min read</strong></small><p>
 
-              </div>
-            </div>
-            
-            <div class="card">
-              <div class="card-body">
-                <h2 class="h3"><a class="stretched-link text-body" href="https:&#x2F;&#x2F;fdb-rs.github.io&#x2F;blog&#x2F;introducing-fdb-crate&#x2F;">Introducing FoundationDB Client API for Tokio</a></h2>
-                
-                
-<p><small>Posted 2022-04-07 07:00:00 by <a class="stretched-link position-relative" href="https://fdb-rs.github.io/authors/rajivr/">rajivr</a>&nbsp;&hyphen;&nbsp;<strong>3&nbsp;min read</strong></small><p>
-
-              </div>
-            </div>
-            
-            
           </div>
+          
+          <p>I am happy to announce fdb crate version
+<a href="https://docs.rs/fdb/0.3.1/fdb/index.html">v0.3.1</a> has been
+released. This is the first release in the v0.3.x series and provides
+support for FoundationDB client API version 710 using cargo feature
+flag <code>fdb-7_1</code>.</p>
+<p>Following are the API changes and new features in this release.</p>
+<ol>
+<li>
+<p>The
+<a href="https://docs.rs/fdb/0.3.1/fdb/range/struct.Range.html"><code>Range</code></a>
+type now has a
+<a href="https://docs.rs/fdb/0.3.1/fdb/range/struct.Range.html#method.into_parts"><code>into_parts</code></a>
+method that lets you easily de-structure a <code>Range</code> value. When you
+have an owned <code>Range</code> value, and you would like owned values of its
+parts, then you can use this method and avoid unnecessary
+<a href="https://doc.rust-lang.org/std/clone/trait.Clone.html#tymethod.clone"><code>clone()</code></a>. The
+<code>into_parts</code> idiom is also available on
+<a href="https://docs.rs/fdb/0.3.1/fdb/struct.KeyValue.html#method.into_parts"><code>KeyValue</code></a>
+and
+<a href="https://docs.rs/fdb/0.3.1/fdb/struct.MappedKeyValue.html#method.into_parts"><code>MappedKeyValue</code></a>
+types.</p>
+</li>
+<li>
+<p>The
+<a href="https://docs.rs/fdb/0.3.1/fdb/transaction/trait.ReadTransaction.html"><code>ReadTransaction</code></a>
+trait has support for
+<a href="https://docs.rs/fdb/0.3.1/fdb/transaction/trait.ReadTransaction.html#tymethod.get_range_split_points"><code>get_range_split_points</code></a>
+which is an API version 710 feature.</p>
+</li>
+<li>
+<p>The
+<a href="https://docs.rs/fdb/0.3.1/fdb/transaction/trait.ReadTransaction.html"><code>ReadTransaction</code></a>
+trait also has support for the
+<a href="https://docs.rs/fdb/0.3.1/fdb/transaction/trait.ReadTransaction.html#tymethod.get_mapped_range"><code>get_mapped_range</code></a>
+feature, which is an experimental feature in FoundationDB 7.1. This
+feature is automatically enabled when you use the cargo feature
+flag <code>fdb-7_1</code>.</p>
+<p>The <code>Range</code> type now includes a
+<a href="https://docs.rs/fdb/0.3.1/fdb/range/struct.Range.html#method.into_mapped_stream"><code>into_mapped_stream</code></a>
+method that returns a stream (asynchronous iterator) of
+<code>MappedKeyValue</code>.</p>
+<p>You can find more information about the GetMappedRange feature
+<a href="https://github.com/apple/foundationdb/wiki/Everything-about-GetMappedRange">here</a>. <a href="https://github.com/fdb-rs/fdb/blob/fdb-0.3.1/fdb/examples/get_mapped_range.rs"><code>get_mapped_range.rs</code></a>
+provides an example of how this feature can be used.</p>
+</li>
+<li>
+<p>FoundationDB
+<a href="https://apple.github.io/foundationdb/tenants.html">Tenant</a> support
+is another experimental feature whose support is included in this
+release. Tenant support is also automatically enabled when you use
+the cargo feature flag <code>fdb-7_1</code>.</p>
+<p>In the bindings Tenant support is implemented using types
+<a href="https://docs.rs/fdb/0.3.1/fdb/struct.Tenant.html"><code>Tenant</code></a>,
+<a href="https://docs.rs/fdb/0.3.1/fdb/tenant/struct.FdbTenant.html"><code>FdbTenant</code></a>
+and
+<a href="https://docs.rs/fdb/0.3.1/fdb/tenant/struct.TenantManagement.html"><code>TenantManagement</code></a>. The
+<a href="https://docs.rs/fdb/0.3.1/fdb/database/struct.FdbDatabase.html#method.open_tenant"><code>open_tenant</code></a>
+method on <code>FdbDatabase</code> provides a way to create a value of
+<code>FdbTenant</code> type and work with tenants in the cluster.</p>
+</li>
+</ol>
+<p>With the release of v0.3.x series, support for cargo feature flag
+<code>fdb-6_3</code> is deprecated. We will continue to support the cargo feature
+flag <code>fdb-6_3</code> in subsequent v0.3.x releases. It would be removed in
+v0.4.x release, when support for API version 720 and cargo feature
+flag <code>fdb-7_2</code> would be introduced. Please plan your migrations
+accordingly.</p>
+<p>I would like to say a big thank you to the FoundationDB community for
+their support and answering my questions in the forums. This release
+would not have been possible without your help!</p>
+<p>Please <a href="/docs/help/contact-us/">contact us</a> if you have any
+questions or feedback.</p>
+
         </article>
       </div>
     </div>

@@ -14,6 +14,10 @@
         <loc>https://fdb-rs.github.io/blog/</loc>
     </url>
     <url>
+        <loc>https://fdb-rs.github.io/blog/fdb-crate-3-0-1/</loc>
+        <lastmod>2022-04-09T11:00:00+00:00</lastmod>
+    </url>
+    <url>
         <loc>https://fdb-rs.github.io/blog/introducing-fdb-crate/</loc>
         <lastmod>2022-04-07T11:00:00+00:00</lastmod>
     </url>
